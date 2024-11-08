@@ -97,7 +97,7 @@ dGuv = system.get_reaction_free_energy_matrix()
 
 The activation free energy or free energy barrier associated with the transition between reactant state $\mu$ and product state $\nu$ is defined as
 ```math
-\Delta G^\ddagger_{\mu\nu} = -\frac{(\Delta G^{\rm o}_{\mu\nu}+\lambda)^2}{4\lambda}
+\Delta G^\ddagger_{\mu\nu} = \frac{(\Delta G^{\rm o}_{\mu\nu}+\lambda)^2}{4\lambda}
 ```
 This quantity can be calculated by
 ```python
