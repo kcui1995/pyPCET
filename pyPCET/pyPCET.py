@@ -30,14 +30,14 @@ class pyPCET(object):
     def __init__(self, ReacProtonPot, ProdProtonPot, DeltaG, Lambda, Vel=0.0434, NStates=10, NGridPot=256, NGridLineshape=500, FitOrder=8, **kwargs):
         """
         *** Initialization ***
-        The input of proton potentials can be either a 2D array or a callable function
+        The input of the proton potential can be either a 2D array or a callable function. 
 
-        If these inputs are 2D array, a fitting will be performed to create a callable function for subsequent calculations
-        By default, the proton potentials will be fitted to an 8th-order polynormial
-        The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, the second row is the potential energy in eV
+        If these inputs are 2D arrays, a fitting will be performed to create a callable function for subsequent calculations. 
+        By default, the proton potentials will be fitted to an 8th-order polynormial. 
+        The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, the second row is the potential energy in eV. 
 
-        If these inputs are functions, they must only take one argument, which is the proton position in Angstrom
-        The unit of the returned proton potentials should be eV
+        If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. 
+        The unit of the returned proton potentials should be eV. 
         """
         if callable(ReacProtonPot):
             self.ReacProtonPot = ReacProtonPot
