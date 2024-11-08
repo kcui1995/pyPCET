@@ -12,7 +12,7 @@ Here $\Delta G^{\rm o}$ is the PCET reaction free energy, $\varepsilon_\mu$ and 
 In general, this rate constant depends on the proton donor-acceptor separation $R$, and the overall PCET rate constant should be calculated as an average over $R$. This is not implemented in this module. However, users can easily write their own code to perform such average. 
 
 ## Installation 
-To use the kinetic model, simply download the code and add it to your `$PYTHONPATH` variable.
+To use the pyPCET module, simply download the code and add it to your `$PYTHONPATH` variable.
 
 ## Documentation
 
