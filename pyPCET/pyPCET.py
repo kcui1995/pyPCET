@@ -24,8 +24,8 @@ class pyPCET(object):
         NGridLineshape (int): number of grip points used to calculate spectral overlap integral, defaut = 500
         FitOrder (int): order of polynomial to fit the proton potential, default = 8 
 
-    The program will automatically determine the ranges of proton position to perform subsequent calculations
-    Users could fine tune these ranges by parseing additional inputs 'rmin', 'rmax'
+    The program will automatically determine the ranges of proton position to perform subsequent calculations. 
+    Users could fine tune these ranges by parseing additional inputs 'rmin', 'rmax'. 
     """
     def __init__(self, ReacProtonPot, ProdProtonPot, DeltaG, Lambda, Vel=0.0434, NStates=10, NGridPot=256, NGridLineshape=500, FitOrder=8, **kwargs):
         """
