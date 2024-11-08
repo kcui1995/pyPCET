@@ -16,7 +16,7 @@ class pyPCET(object):
     The input parameters are:
         ReacProtonPot (2D array or function): proton potential of the reactant state
         ProdProtonPot (2D array or function): proton potential of the product state
-        DeltaG (float): reaction free energy of the PCET process in eV. This should be the free energy difference between electronic states, i.e., ZPEs are not included
+        DeltaG (float): reaction free energy of the PCET process in eV. This should be the free energy difference between electronic states, i.e., ZPEs should not be included
         Lambda (float): reorganization energy of the PCET reaction in eV
         Vel (float): electronic coupling between reactant and product states in eV, default = 0.0434 eV = 1 kcal/mol
         NStates (int): number of proton vibrational states to be calculated, default = 10
