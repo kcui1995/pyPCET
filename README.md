@@ -24,7 +24,7 @@ To calculate the PCET rate constant using the vibronically nonadiabatic PCET the
 1. `ReacProtonPot` (2D array or function): proton potential of the reactant state
 2. `ProdProtonPot` (2D array or function): proton potential of the product state
 
-The input of proton potentials can be either a 2D array or a callable function. If these inputs are 2D array, a fitting will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 8th-order polynormial. The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV
+The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 8th-order polynormial. The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV
 
 3. `DeltaG` (float): reaction free energy of the PCET process in eV. This should be the free energy difference between electronic states, i.e., ZPEs should not be included
 4. `Lambda` (float): reorganization energy of the PCET reaction in eV
@@ -47,11 +47,11 @@ Lambda = 1.00
 
 # double well potentials calculated from first principles 
 rp = np.array([-0.614,-0.550,-0.485,-0.420,-0.356,-0.291,-0.226,-0.162,-0.097,-0.032,0.032,0.097,0.162,0.226,0.291,0.356,0.420,0.485,0.550,0.614])
-E_LES = np.array([5.283,4.534,4.061,3.794,3.673,3.646,3.680,3.688,3.634,3.646,3.602,3.513,3.392,3.257,3.138,3.078,3.140,3.413,4.022,5.144])
-E_LEPT = np.array([4.847,4.134,3.706,3.495,3.452,3.509,3.620,3.801,3.949,4.073,4.157,4.194,4.189,4.157,4.128,4.144,4.270,4.597,5.250,6.411])
+E_Reac = np.array([5.283,4.534,4.061,3.794,3.673,3.646,3.680,3.688,3.634,3.646,3.602,3.513,3.392,3.257,3.138,3.078,3.140,3.413,4.022,5.144])
+E_Prod = np.array([4.847,4.134,3.706,3.495,3.452,3.509,3.620,3.801,3.949,4.073,4.157,4.194,4.189,4.157,4.128,4.144,4.270,4.597,5.250,6.411])
 
-ReacProtonPot = fit_poly8(rp, E_LES) 
-ProdProtonPot = fit_poly8(rp, E_LEPT)
+ReacProtonPot = fit_poly8(rp, E_Reac) 
+ProdProtonPot = fit_poly8(rp, E_Prod)
 
 # set up system
 system = pyPCET(ReacProtonPot, ProdProtonPot, dG, Lambda, Vel=Vel)
@@ -94,7 +94,6 @@ Pu = system.get_reactant_state_distributions()
 Suv = system.get_proton_overlap_matrix()
 dGuv = system.get_reaction_free_energy_matrix()
 ```
-`Pu` is a 1D array with a length of `NStates`, where as `Suv` and `dGuv` are `NStates`$\times$`NStates` matrices. 
 
 The activation free energy or free energy barrier associated with the transition between reactant state $\mu$ and product state $\nu$ is defined as
 ```math
