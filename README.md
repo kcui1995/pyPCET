@@ -94,6 +94,8 @@ Pu = system.get_reactant_state_distributions()
 Suv = system.get_proton_overlap_matrix()
 dGuv = system.get_reaction_free_energy_matrix()
 ```
+`Pu` is a 1D array with a length of `NStates`, where as `Suv` and `dGuv` are `NStates`$\times$`NStates` matrices. 
+
 The activation free energy or free energy barrier associated with the transition between reactant state $\mu$ and product state $\nu$ is defined as
 ```math
 \Delta G^\ddagger_{\mu\nu} = -\frac{(\Delta G^{\rm o}_{\mu\nu}+\lambda)^2}{4\lambda}
