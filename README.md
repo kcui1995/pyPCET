@@ -75,7 +75,7 @@ In a typical calculation of the vibronically nonadiabatic PCET rate constant, we
 
 All these steps have been integrated in the method `pyPCET.calculate`.  This method takes two parameters, the mass of the particle, which should be set to the mass of the proton or deuterium, and the temperature of the system. It returns the calculated rate constant at the given condition. Follow by the previous example, we can calculate the PCET rate constant and the kinetic isotope effect (KIE) by: 
 ```python
-from pyPCEnT.units import massH, massD
+from pyPCET.units import massH, massD
 
 k_tot_H = system.calculate(massH, T)
 k_tot_D = system.calculate(massD, T)
