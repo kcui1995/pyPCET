@@ -115,6 +115,16 @@ def fit_poly8(xdata, ydata):
         return aa*x**8+bb*x**7+cc*x**6+dd*x**5+ee*x**4+ff*x**3+gg*x**2+hh*x+ii
     return func
 
+def bspline(xdata, ydata, s=0.0):
+    """
+    This function spline the given data using BSpline
+    """
+    tck = splrep(xdata, ydata, s=s)
+    xdata_tmp = np.linspace(np.min(xdata),np.max(xdata),500)
+    def func(x):
+       return BSpline(*tck)(x) - np.min(BSpline(*tck)(xdata_tmp))
+    return func
+
 #====================================================
 # some useful functions
 #====================================================
