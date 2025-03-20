@@ -9,5 +9,5 @@ __all__ = ['Morse', 'Morse_inverted', 'Gaussian', 'poly6', 'poly8',
            'FGH_1D', 'pyPCET', 'kappa_coupling', 
            'kB', 'h', 'hbar', 'c', 'massH', 'massD',
            'Ha2eV', 'Ha2kcal', 'kcal2Ha', 'eV2Ha', 'eV2kcal', 'kcal2eV',
-           'A2Bohr', 'A2nm', 'A2cm', 'Bohr2A', 'cm2A', 'nm2A', 'wn2eV', 'eV2wn', 'Da2me', 'me2Da',
+           'A2Bohr', 'A2nm', 'A2cm', 'Bohr2A', 'cm2A', 'nm2A', 'wn2eV', 'eV2wn', 'Da2me', 'me2Da', 'au2s', 
            ]
