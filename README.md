@@ -63,7 +63,7 @@ Other parameters that can be modified during the initialization are
 
 6. `NStates` (int): number of proton vibrational states to be calculated, default = 10. One should test the convergence with respect to this quantity. 
 7. `NGridPot` (int): number of grid points used for FGH calculation, default = 128
-8. `FitOrder` (int): order of polynomial to fit the proton potential, default = 8, This is only useful when some of the proton potentials, `ReacProtonPot` and `ProdProtonPot`, are provided as 2D arrays. Another possible value for this is 6.
+8. `Smooth` (string): method to smooth the proton potential if given as 2Darray, possible choices are 'fit_poly6', 'fit_poly8', 'bspline', default = 'fit_poly6' 
 
 When initializing, The program will automatically determine the ranges of proton position to perform subsequent calculations. Users could fine tune these ranges by parseing additional inputs `rmin`, `rmax`. 
 
