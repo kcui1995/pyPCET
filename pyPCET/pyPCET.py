@@ -20,9 +20,9 @@ class pyPCET(object):
         Lambda (float): reorganization energy of the PCET reaction in eV
         Vel (float): electronic coupling between reactant and product states in eV, default = 0.0434 eV = 1 kcal/mol
         NStates (int): number of proton vibrational states to be calculated, default = 10
-        NGridPot (int): number of grid points used for FGH calculation, default = 128
+        NGridPot (int): number of grid points used for FGH calculation, default = 256
         NGridLineshape (int): number of grip points used to calculate spectral overlap integral, defaut = 500
-        FitOrder (int): order of polynomial to fit the proton potential, default = 8 
+        Smooth (string): method to smooth the proton potential if given as 2Darray, possible choices are 'fit_poly6', 'fit_poly8', 'bspline', default = 'fit_poly6' 
 
     The program will automatically determine the ranges of proton position to perform subsequent calculations. 
     Users could fine tune these ranges by parseing additional inputs 'rmin', 'rmax'. 
@@ -46,12 +46,14 @@ class pyPCET(object):
             pot = ReacProtonPot[1]
             rmin1 = np.min(r)
             rmax1 = np.max(r)
-            if FitOrder == 8:
-                self.ReacProtonPot = fit_poly8(r, pot)
-            elif FitOrder == 6:
+            if Smooth == 'fit_poly6':
                 self.ReacProtonPot = fit_poly6(r, pot)
+            elif Smooth == 'fit_poly8':
+                self.ReacProtonPot = fit_poly8(r, pot)
+            elif Smooth == 'bspline':
+                self.ReacProtonPot = bspline(r, pot)
             else:
-                raise ValueError("FitOrder must be 6 or 8")
+                raise ValueError("'Smooth' must be set to one of the followings: 'fit_poly6', 'fit_poly8', or 'bspline'")
         else:
             raise TypeError("'ReacProtonPot' must be a 2D array with shape (N, 2) or a callable function")
 
@@ -62,12 +64,14 @@ class pyPCET(object):
             pot = ProdProtonPot[1]
             rmin2 = np.min(r)
             rmax2 = np.max(r)
-            if FitOrder == 8:
-                self.ProdProtonPot = fit_poly8(r, pot)
-            elif FitOrder == 6:
+            if Smooth == 'fit_poly6':
                 self.ProdProtonPot = fit_poly6(r, pot)
+            elif Smooth == 'fit_poly8':
+                self.ProdProtonPot = fit_poly8(r, pot)
+            elif Smooth == 'bspline':
+                self.ProdProtonPot = bspline(r, pot)
             else:
-                raise ValueError("FitOrder must be 6 or 8")
+                raise ValueError("'Smooth' must be set to one of the followings: 'fit_poly6', 'fit_poly8', or 'bspline'")
         else:
             raise TypeError("'ProdProtonPot' must be a 2D array with shape (N, 2) or a callable function")
 
