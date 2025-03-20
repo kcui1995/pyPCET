@@ -28,3 +28,5 @@ eV2wn = 1/wn2eV
 
 Da2me = 1822.888486209
 me2Da = 1/Da2me
+
+au2s = 2.418884326e-17 #covert atomic unit of time to s
