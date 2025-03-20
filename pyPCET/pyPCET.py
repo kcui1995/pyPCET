@@ -27,7 +27,7 @@ class pyPCET(object):
     The program will automatically determine the ranges of proton position to perform subsequent calculations. 
     Users could fine tune these ranges by parseing additional inputs 'rmin', 'rmax'. 
     """
-    def __init__(self, ReacProtonPot, ProdProtonPot, DeltaG, Lambda, Vel=0.0434, NStates=10, NGridPot=256, NGridLineshape=500, FitOrder=8, **kwargs):
+    def __init__(self, ReacProtonPot, ProdProtonPot, DeltaG, Lambda, Vel=0.0434, NStates=10, NGridPot=256, NGridLineshape=500, Smooth='fit_poly6', **kwargs):
         """
         *** Initialization ***
         The input of the proton potential can be either a 2D array or a callable function. 
