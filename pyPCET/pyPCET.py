@@ -156,7 +156,7 @@ class pyPCET(object):
     def calc_reaction_free_energy_matrix(self):
         for u in range(self.NStates):
             for v in range(self.NStates):
-                self.dGuv[u,v] = self.DeltaG + self.ProdProtonEnergyLevels[v] - self.ReacProtonEnergyLevels[u] 
+                self.dGuv[u,v] = self.DeltaG + (self.ProdProtonEnergyLevels[v] - self.ProdProtonEnergyLevels[0]) - (self.ReacProtonEnergyLevels[u] - self.ReacProtonEnergyLevels[0])
         return self.dGuv
 
     def calc_kinetic_contribution_matrix(self, T=298):
@@ -174,6 +174,18 @@ class pyPCET(object):
 
         self.k_tot = np.sum(self.kuv)
         return self.k_tot
+        
+    def set_parameters(self, **kwargs):
+        """
+        reset DeltaG, Lambda, and Vel parameres, this is useful for electrochemical PCET, 
+        where integration over electronic states with different energy in the electrode is needed
+        """
+        if 'DeltaG' in kwargs.keys():
+            self.DeltaG = kwargs['DeltaG']
+        if 'Lambda' in kwargs.keys():
+            self.Lambda = kwargs['Lambda']
+        if 'Vel' in kwargs.keys():
+            self.Vel = kwargs['Vel']
 
     def get_reactant_proton_states(self):
         """
