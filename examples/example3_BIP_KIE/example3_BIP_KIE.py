@@ -295,7 +295,7 @@ ax1,ax2 = gs.subplots(sharex=True, sharey=True)
 
 ax1.set_title('H', fontsize=18)
 ax1.plot(R_fine_grid, kH_fine_grid/np.max(kH_R), '-', lw=2, color=color1, label=r'$k_{\rm PCET}$')
-ax1.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='P(R)')
+ax1.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='$P(R)$')
 ax1.plot(R_fine_grid, PR*kH_fine_grid/np.max(PR*kH_fine_grid), '-', lw=2, color='k', label=r'$k_{\rm PCET}\times P(R)$')
 
 ax1.axvline(x=R_eq, linewidth=1.5, color='darkgray', linestyle=(0, (3, 3)))
@@ -309,7 +309,7 @@ ax1.tick_params(labelsize=14)
 
 ax2.set_title('D', fontsize=18)
 ax2.plot(R_fine_grid, kD_fine_grid/np.max(kD_R), '-', lw=2, color=color1, label=r'$k_{\rm PCET}$')
-ax2.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='P(R)')
+ax2.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='$P(R)$')
 ax2.plot(R_fine_grid, PR*kD_fine_grid/np.max(PR*kD_fine_grid), '-', lw=2, color='k', label=r'$k_{\rm PCET}\times P(R)$')
 
 ax2.axvline(x=R_eq, linewidth=1.5, color='darkgray', linestyle=(0, (3, 3)))
