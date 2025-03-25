@@ -132,7 +132,7 @@ def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, 
     return EDL_potential_drop
 
 
-def Fermi(E, E_Fermi=0, T=298.15):
+def Fermi_distribution(E, E_Fermi=0, T=298.15):
     """
     Fermi distribution of electrode energy levels E at a given temperature
     """
