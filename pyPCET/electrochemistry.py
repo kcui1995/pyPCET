@@ -5,7 +5,7 @@ from .units import cm2A, A2Bohr, Bohr2A, eV2Ha, Ha2eV, kB
 from .functions import isnumber, isarray
 
 
-def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, m_solvent, c_ions, C_EDL, PZFCvsSHE, T=298.15, eta_Kirkwood=1, g_Kirkwood=2.4):
+def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, m_solvent, c_ions, C_EDL, PZFCvsSHE, T=298.15, eta_Kirkwood=1, g_Kirkwood=2.4, print=True):
     """
     Model the electric double layer (EDL) near an electrode,
     This function will return a callable function describing the potential drop in the EDL at the given potential
@@ -30,7 +30,8 @@ def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, 
     
     # convert the potential to vs. PZFC
     EvsPZFC = EvsSHE - PZFCvsSHE
-    print(f"E vs. SHE = {EvsSHE:.2f} V")
+    if print:
+        print(f"E vs. SHE = {EvsSHE:.2f} V")
     
     # calculate surface charge density sigma_M on the electrode from the capacitance and potential
     # C_EDL given in microFarad / cm^2
@@ -38,7 +39,8 @@ def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, 
     # 1e6 converts Coulomb to microCoulomb
     sigma_M = (C_EDL * EvsPZFC) / (elementary_charge*1e6 * (cm2A*A2Bohr)**2)
     
-    print(f"sigma_M = {sigma_M:.6e} a.u.")
+    if print:
+        print(f"sigma_M = {sigma_M:.6e} a.u.")
     
     # number density of the solvent in atomic unit calculated from the molar mass and density of the solvent
     # in atomic units (Bohr^-3)
@@ -51,7 +53,8 @@ def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, 
         else:
             eta_Kirkwood = 2*(2*eps_st+eps_op)/(3*g_Kirkwood*eps_st)
         dipole_au = 3/(2+eps_op) * np.sqrt(3*kB*T*eV2Ha*(eps_st-eps_op)*eta_Kirkwood/(8*np.pi*n_solvent_au))
-        print(f"dipole = {dipole_au:.6f} a.u.")
+        if print:
+            print(f"dipole = {dipole_au:.6f} a.u.")
     elif isnumber(dipole):
         Debye2au = 1/2.541746473
         dipole_au = dipole*Debye2au 
@@ -70,7 +73,8 @@ def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, 
     phi_OHP_au = 2*kB*T*eV2Ha * np.arcsinh(sigma_M / np.sqrt((2*kB*T*eV2Ha * eps_st * n_ions_au) / np.pi))
     phi_OHP = phi_OHP_au * Ha2eV
     
-    print(f"phi_OHP = {phi_OHP:.6f} V")
+    if print:
+        print(f"phi_OHP = {phi_OHP:.6f} V")
     
     def Langevin(u):
         return 1/np.tanh(u) - 1/u
@@ -95,10 +99,11 @@ def EDL_model(EvsSHE, dIHL, dOHL, eps_IHL, eps_st, eps_op, dipole, rho_solvent, 
     E_IHL_au = E_OHL_au * eps_OHL(E_OHL_au) / eps_IHL
     E_IHL = E_IHL_au * Ha2eV / Bohr2A
     
-    print(f"eps_OHL = {eps_OHL(E_OHL_au):.6f}")
-    print(f"E_OHL = {E_OHL:.6f} V/A")
-    print(f"E_IHL = {E_IHL:.6f} V/A")
-    print()
+    if print:
+        print(f"eps_OHL = {eps_OHL(E_OHL_au):.6f}")
+        print(f"E_OHL = {E_OHL:.6f} V/A")
+        print(f"E_IHL = {E_IHL:.6f} V/A")
+        print()
     
     # screen constant in the diffuse layer in A^-1
     kappa = np.sqrt((8*np.pi*n_ions_au) / (eps_st*kB*T*eV2Ha)) / Bohr2A
