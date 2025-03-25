@@ -5,6 +5,7 @@ from pyPCET import pyPCET
 from pyPCET.functions import fit_poly6, fit_poly8
 from pyPCET.units import massH, massD
 from pyPCET.units import kB, kcal2eV, A2Bohr, Ha2eV
+from pyPCET.electrochem import Fermi_distribution
 from scipy.integrate import simps
 from scipy.signal import find_peaks
 from scipy.interpolate import interp1d
@@ -107,11 +108,6 @@ plt.clf()
 # Calculate the KIE of electrochemical PCET of BIP at different R and eta = 0
 # The standard rate constant is approximated as the anodic rate constant at eta = 0
 #=========================================================================================
-
-# Fermi distribution at a given temperature
-def Fermi(epsilon, epsilonF=0, T=298):
-    # epsilonF is the Fermi level, which is often used as the reference for zero energy
-    return 1/(np.exp((epsilon-epsilonF)/kB/T) + 1)
 
 
 # we sample 100 different epsilon values from -2 eV to 2 eV to perform the numerical intergation over electrode states
@@ -225,8 +221,8 @@ for i,R in enumerate(Rs):
                 outfp.write('='*125 + '\n\n')
 
     # calculate the anodic rate constant according to Eq. (S2) in the paper
-    kH_R[i] = simps(rho_M/beta*(1-Fermi(epsilons, T=T))*kH_epsilon, epsilons)
-    kD_R[i] = simps(rho_M/beta*(1-Fermi(epsilons, T=T))*kD_epsilon, epsilons)
+    kH_R[i] = simps(rho_M/beta*(1-Fermi_distribution(epsilons, T=T))*kH_epsilon, epsilons)
+    kD_R[i] = simps(rho_M/beta*(1-Fermi_distribution(epsilons, T=T))*kD_epsilon, epsilons)
 
 
 # Print PCET rate constants for H and D at each R to a file
