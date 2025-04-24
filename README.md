@@ -9,7 +9,7 @@ where $`V_{\rm el}`$ is the electronic coupling between reactant and product ele
 ```
 Here $\Delta G^{\rm o}$ is the PCET reaction free energy, $\varepsilon_\mu$ and $\varepsilon_\nu$ are the energies of reactant and product vibronic states $\mu$ and $\nu$, relative to their respective ground vibronic states. 
 
-In general, this rate constant depends on the proton donor-acceptor separation $R$, and the overall PCET rate constant should be calculated as an average over $R$. This is not implemented in this module. However, users can easily write their own code to perform such average. 
+In general, this rate constant depends on the proton donor-acceptor separation $R$, and the overall PCET rate constant should be calculated as an average over $R$. This is not implemented in this module. However, users can easily write a outer loop to perform such average, as in examples 3 and 4. 
 
 ## Installation 
 To use the pyPCET module, simply download the code and add it to your `$PYTHONPATH` variable.
