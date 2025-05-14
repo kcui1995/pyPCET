@@ -118,3 +118,42 @@ kuv = system.get_kinetic_contribution_matrix()
 k_tot = system.get_total_rate_constant()
 percentage_contribution = kuv/k_tot
 ```
+### Probing Nonadiabaticity
+The method coded in the `pyPCET` module is only applicable for PCET reactions that are both vibronically and electronically nonadiabatic. The module `nonadiabaticity` contains methods to probe the nonadiabaticity of a PCET reaction. 
+
+#### Required Quantities
+To start an analysis, we need the following quantities:
+
+1. `rp` (1D array): proton coordinate along the proton axis in A
+2. `ReacProtonPot` (1D array): Reactant proton potential as a function of rp in eV
+3. `ProdProtonPot` (1D array): Product proton potential as a function of rp in eV
+4. `Vel` (float or 1D array): electronic coupling as a function of rp or a constant in eV
+
+The input of the proton coodtinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a float number. If `Vel` is given as a float number, we assume it is constant along the proton coordinate. Note that the programm will not interpolate or fit the input data. The users should provide data on a dense grid to ensure numerical accuracy in subsequent calculations. The `fit_poly6`, `fit_poly8`, and `bspline` functions in `functions.py` for interpolation or fitting purpose. 
+
+In this example, we read calculated proton potentials and electronic coupling from a file, and then spline the data using `bspline` function in `functions.py`
+
+```python
+from pyPCET import kappa_coupling 
+from pyPCET.functions import bspline 
+from scipy.interpolate import CubicSpline
+from pyPCET.units import kcal2eV, massH
+
+# double well potentials and electronic coupling read from a file
+# In this file, all energies are in kcal/mol
+rp_read, E_Reac, E_Prod, Vel = np.loadtxt('Y356_Y731_config2_env.dat', unpack=True)
+E_Reac *= kcal2eV
+E_Prod *= kcal2eV
+Vel *= kcal2eV
+
+# Spline the proton potential
+ReacProtonPot = bspline(rp_read, E_Reac) 
+ProdProtonPot = bspline(rp_read, E_Prod)
+Vel_rp = CubicSpline(rp_read, Vel)
+
+# define a finer rp grid
+rp = np.linspace(-0.8, 0.8, 256)
+
+# setup the system and perform the calculation
+system = kappa_coupling(rp, ReacProtonPot(rp), ProdProtonPot(rp), Vel_rp(rp))
+```
