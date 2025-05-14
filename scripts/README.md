@@ -67,4 +67,4 @@ For example, if the xyz for the molecule is “mol.xyz“, the log file of the G
 >>> python3 calc_keff.py --xyz mol.xyz --log freq.log -D 0 -A 1
 ```
 
-It will print the effective force constant for the proton donor-acceptor mode in a.u., the effective reduced mass for this mass in amu, and the effective frequency in cm<sup>^-1</sup>. 
+It will print the effective force constant for the proton donor-acceptor mode in a.u., the effective reduced mass for this mass in amu, and the effective frequency in cm<sup>-1</sup>. 
