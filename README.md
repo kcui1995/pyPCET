@@ -144,7 +144,7 @@ To start an analysis, we need the following quantities:
 The input of the proton coodtinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a number. If `Vel` is given as a number, we assume it is constant along the proton coordinate. 
 
 >[!NOTE]
-> The programm will use the input data as is, without any automatic interpolation or fitting. The users should provide data on a fine grid of proton coordinate to ensure numerical accuracy in subsequent calculations.
+> The programm will use the input data as is, without any automatic interpolation or fitting. The users should provide data on a fine grid of proton coordinate to ensure numerical accuracy in the calculations.
 
 > [!TIP]
 > The `fit_poly6`, `fit_poly8`, and `bspline` functions in `functions.py` can be used to interpolate or fit the input data to generate proton potentials on a finer grid. See example below. 
