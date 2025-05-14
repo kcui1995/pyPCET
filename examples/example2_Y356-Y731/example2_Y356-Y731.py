@@ -1,11 +1,9 @@
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 from pyPCET import pyPCET
 from pyPCET.functions import bspline 
 from pyPCET.units import massH, massD
-from pyPCET.units import kB, kcal2eV, A2Bohr, Ha2eV
-from pyPCET.electrochemistry import Fermi_distribution
+from pyPCET.units import kcal2eV
 from scipy.integrate import simps
 from scipy.signal import find_peaks
 from scipy.interpolate import interp1d
