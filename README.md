@@ -16,7 +16,7 @@ To use the pyPCET module, simply download the code and add it to your `$PYTHONPA
 
 ## Documentation
 
-### Initialization
+### I. Initialization
 
 #### Required Quantities
 To calculate the PCET rate constant using the vibronically nonadiabatic PCET theory, we need the following physical quantities: 
@@ -68,7 +68,7 @@ Other parameters that can be modified during the initialization are
 When initializing, The program will automatically determine the ranges of proton position to perform subsequent calculations. Users could fine tune these ranges by parseing additional inputs `rmin`, `rmax`. 
 
 
-### Calculation
+### II. Calculation
 #### PCET Rate Constant
 In a typical calculation of the vibronically nonadiabatic PCET rate constant, we first need to solve the 1D Schrödinger equations for the proton moving in the proton potentials associated with the reactant and product electronic states. This calculation yields the proton vibrational energy levels and wave functions, which in turn determine the Boltzmann population of the reactant vibronic states, $`P_{\mu}`$, the overlap integral between the proton vibrational wave functions associated with the reactant and product electronic states, $`S_{\mu\nu}`$, as well as the reaction free energy for vibronic states $\mu$ and $\nu$, $`\Delta G^{\rm o}_{\mu\nu}`$. We will calculate $`P_{\mu}`$, $`S_{\mu\nu}`$, and $`\Delta G^{\rm o}_{\mu\nu}`$ for all $`\mu`$ and $`\nu`$ from 0 to `NStates`. These quantities will be fed into the rate constant expression to give the final results. 
 
@@ -81,7 +81,7 @@ k_tot_D = system.calculate(massD, T)
 KIE = k_tot_H/k_tot_D
 ```
 
-#### Analyze the Result
+#### Analysis of the Result
 The calculated proton vibrational energy levels and wave functions can be accessed through
 ```python
 Evib_reactant, wfc_reactant = system.get_reactant_proton_states()
@@ -118,8 +118,9 @@ kuv = system.get_kinetic_contribution_matrix()
 k_tot = system.get_total_rate_constant()
 percentage_contribution = kuv/k_tot
 ```
-### Probing Nonadiabaticity
-The methods coded in the `pyPCET` module is only applicable for PCET reactions that are both vibronically and electronically nonadiabatic. The module `kappa_coupling` in `nonadiabaticity.py` contains methods to probe the nonadiabaticity of a PCET reaction. 
+
+### III. Probing Nonadiabaticity
+The rate constant expression coded in the `pyPCET` module is only applicable for PCET reactions that are both vibronically and electronically nonadiabatic. The module `kappa_coupling` contains methods to probe the nonadiabaticity of a PCET reaction. 
 
 #### Required Quantities
 To start an analysis, we need the following quantities:
@@ -129,9 +130,9 @@ To start an analysis, we need the following quantities:
 3. `ProdProtonPot` (1D array): Product proton potential as a function of rp in eV
 4. `Vel` (float or 1D array): electronic coupling as a function of rp or a constant in eV
 
-The input of the proton coodtinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a float number. If `Vel` is given as a float number, we assume it is constant along the proton coordinate. Note that the programm will not interpolate or fit the input data. The users should provide data on a dense grid to ensure numerical accuracy in subsequent calculations. The `fit_poly6`, `fit_poly8`, and `bspline` functions in `functions.py` for interpolation or fitting purpose. 
+The input of the proton coodtinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a number. If `Vel` is given as a number, we assume it is constant along the proton coordinate. Note that the programm will not automatically interpolate or fit the input data. The users should provide data on a dense grid of the proton coordinate to ensure numerical accuracy in subsequent calculations. The `fit_poly6`, `fit_poly8`, and `bspline` functions in `functions.py` can be used for interpolation or fitting purpose. 
 
-In the following example, we read calculated proton potentials and electronic coupling from a file, and then spline the data using `bspline` function in `functions.py`, 
+In the following example, we read calculated proton potentials and electronic coupling from a file, and then spline the data using the `bspline` function in `functions.py`, 
 
 ```python
 from pyPCET import kappa_coupling 
@@ -166,7 +167,7 @@ from pyPCET.units import massH
 system.calculate(massH)
 ```
 
-The program will calculate the effective proton tunneling time $`\tau_{\rm p}`$, the electronic transition time $`\tau_{\rm e}`$, the adiabaticity parameter $`p = \tau_{\rm p}/\tau_{\rm e}`$, the prefactor $`\kappa`$ which enters the general expression of the vibronic coupling in a semiclassical formalism, the vibronic coupling in the general form $`V_{\rm \mu\nu}^{(\rm sc)}`$, and the the vibronic coupling at nonadiabatic and adiabatic limits $`V_{\rm \mu\nu}^{(\rm nad)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. Note that we only implemented the analsysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). 
+The program will calculate the effective proton tunneling time $`\tau_{\rm p}`$, the electronic transition time $`\tau_{\rm e}`$, the adiabaticity parameter $`p = \tau_{\rm p}/\tau_{\rm e}`$, the prefactor $`\kappa`$ which enters the general expression of the vibronic coupling in a semiclassical formalism, the vibronic coupling in the general form $`V_{\rm \mu\nu}^{(\rm sc)}`$, and the vibronic coupling in the nonadiabatic and adiabatic limits $`V_{\rm \mu\nu}^{(\rm nad)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. Note that we only implemented the analsysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). 
 
 The users can access the calculated quantities via
 
@@ -176,3 +177,6 @@ V_sc, V_nad, V_ad = system.get_vibronic_couplings()
 ```
 
 At a given temperature, the reaction is vibronically nonadiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \ll k_{\rm B}T`$, or vibronically adiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \gg k_{\rm B}T`$. An electronically nonadiabatic reaction is characterized by $`p \ll 1`$, $`\kappa < 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm nad)}`$, whereas an electronically adiabatic reaction is characterized by $`p \gg 1`$, $`\kappa \approx 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm ad)}`$. 
+
+### IV. Useful Scripts
+In the folder `scripts` we provide several useful scripts that can help generate the input quantities for PCET rate constant calculation or nonadiabaticity analysis. Please refer to the README file in that folder for detailed documentation. 
