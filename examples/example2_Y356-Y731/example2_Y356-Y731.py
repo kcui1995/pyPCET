@@ -83,7 +83,6 @@ plt.clf()
 # Calculate the PCET rate constant between Y356 and Y731 
 #=========================================================================================
 
-
 kH_R = np.zeros(len(Rs))
 kD_R = np.zeros(len(Rs))
 
