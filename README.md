@@ -75,7 +75,7 @@ Other parameters that can be modified during the initialization are
 >  Users could fine tune the range of proton position by providing additional input parameters `rmin`, `rmax`. 
 
 #### Reset Parameters
-The `DeltaG`, `Lambda`, and `Vel` parameters can be reset after initialization using the `set_parameters` method. For example, one can reset the $`\Delta G`$ by
+The `DeltaG`, `Lambda`, and `Vel` parameters can be reset after initialization using the `set_parameters` method. For example, one can reset `DeltaG` by
 
 ```python
 dG_alt = +0.10
