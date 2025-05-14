@@ -213,9 +213,8 @@ a2, b2, c2 = curve_fit(quadratic, Rs, np.log(kD_R))[0]
 kH_fine_grid = np.exp(quadratic(R_fine_grid, a1, b1, c1))
 kD_fine_grid = np.exp(quadratic(R_fine_grid, a2, b2, c2))
 
-# P(R) is calculated from umbrella sampling or unrestrained MD
+# P(R) is calculated from umbrella sampling
 # Read the umbrella sampling data from file and fit logP(R) to a 4th order polynomial
-# There are two sets of umbrella sampling data in files 'p_R_umbrella_A.dat' and 'p_R_umbrella_B.dat'
 R_tmp, PR_tmp = np.loadtxt('p_R_umbrella_A.dat', unpack=True)
 
 def poly4(x, a, b, c, d, e):
@@ -223,11 +222,6 @@ def poly4(x, a, b, c, d, e):
 
 params = curve_fit(poly4, R_tmp, np.log(PR_tmp))[0]
 PR = np.exp(poly4(R_fine_grid, *params))
-
-# P(R) from unrestrained MD data is given as a sum of Gaussian distributions
-#def PR_unrestrainedMD(R):
-#    return 0.308*(1/(0.184*np.sqrt(2*np.pi))*np.exp(-0.5*((R-3.200)/0.184)**2))+0.692*(1/(0.123*np.sqrt(2*np.pi))*np.exp(-0.5*((R-2.849)/0.123)**2))   # R cutoff at 3.6
-#PR = PR_unrestrainedMD(R_fine_grid)
 
 # re-normalize the distribution
 Z = simps(PR, R_fine_grid)
