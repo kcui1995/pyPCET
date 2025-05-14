@@ -6,7 +6,6 @@ from pyPCET.units import massH, massD
 from pyPCET.units import kcal2eV
 from scipy.integrate import simps
 from scipy.signal import find_peaks
-from scipy.interpolate import interp1d
 from scipy.optimize import curve_fit
 
 
