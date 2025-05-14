@@ -26,7 +26,7 @@ To calculate the PCET rate constant using the vibronically nonadiabatic PCET the
 
 The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynormial. The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV
 
-3. `DeltaG` (float): reaction free energy of the PCET process in eV. This should be the free energy difference between electronic states, i.e., ZPEs should not be included
+3. `DeltaG` (float): reaction free energy of the PCET process in eV. ZPEs should be included here. 
 4. `Lambda` (float): reorganization energy of the PCET reaction in eV
 5. `Vel` (float): electronic coupling between reactant and product electronic states in eV, default = 0.0434 eV = 1 kcal/mol
 
@@ -63,10 +63,13 @@ Other parameters that can be modified during the initialization are
 
 6. `NStates` (int): number of proton vibrational states to be calculated, default = 10. One should test the convergence with respect to this quantity. 
 7. `NGridPot` (int): number of grid points used for FGH calculation, default = 256
-8. `Smooth` (string): method to smooth the proton potential if given as 2Darray, possible choices are 'fit_poly6', 'fit_poly8', 'bspline', default = 'fit_poly6' 
+8. `Smooth` (string): method to smooth the proton potential if given as 2D array, possible choices are 'fit_poly6', 'fit_poly8', 'bspline', default = 'fit_poly6' 
 
 > [!NOTE]
-> When initializing, The program will automatically determine the range of proton position to perform subsequent calculations. If the input proton potentials are 2D arrays, the range will be the same as the input data. If the input proton potentials are callable functions, a range from -0.8 A to 0.8 A will be used. Users could fine tune these ranges by parseing additional inputs `rmin`, `rmax`. 
+> When initializing, The program will automatically determine the range of proton position to perform subsequent calculations. If the input proton potentials are 2D arrays, the range will be the same as the input data. If the input proton potentials are callable functions, a range from -0.8 A to 0.8 A will be used. This default value may not work if the proton donor-acceptor distance is too large.
+
+> [!TIP]
+>  Users could fine tune the range of proton position by parseing additional inputs `rmin`, `rmax`. 
 
 #### Reset Parameters
 The `DeltaG`, `Lambda`, and `Vel` parameters can be reset after initialization using the `set_parameters` method. For example, one can reset the $`\Delta G`$ by
