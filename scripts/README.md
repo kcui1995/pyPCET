@@ -46,7 +46,7 @@ The detailed instruction of this code is annotated in the script. Note that you 
 ## Calculate Effective Force Constant for Proton Donor-Acceptor Motion using Gaussian
 The script `calc_keff.py` is used to calculate the effective force constant for the proton donor-acceptor motion, which in turn will be used to calculate the proton donor-acceptor distance distribution function `$P(R)$`. 
 
-To use this code, you will need a xyz file for the molecular structure, and the log file for a Gaussian frequency job. You also need to install the [Atomic Simulation Environment (ASE)](https://wiki.fysik.dtu.dk/ase/index.html). 
+To use this code, you will need a xyz file for the molecular structure, and the log file for a Gaussian frequency job. You also need to install the [ASE](https://wiki.fysik.dtu.dk/ase/index.html). 
 
 >[!NOTE]
 > Make sure to set `#P` and `freq=HPmodes` in your Gaussian calculation. The script is looking for some specific text in the log file and will not work properly without these settings. 
