@@ -196,4 +196,4 @@ V_sc, V_nad, V_ad = system.get_vibronic_couplings()
 At a given temperature, the reaction is vibronically nonadiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \ll k_{\rm B}T`$, or vibronically adiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \gg k_{\rm B}T`$. An electronically nonadiabatic reaction is characterized by $`p \ll 1`$, $`\kappa < 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm nad)}`$, whereas an electronically adiabatic reaction is characterized by $`p \gg 1`$, $`\kappa \approx 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm ad)}`$. 
 
 ### IV. Some Useful Scripts
-In the folder `scripts` we provide several useful scripts that can help generate the input quantities for PCET rate constant calculation or nonadiabaticity analysis. Please refer to the README file in that folder for detailed documentation. 
+In the directory `scripts/` we provide several useful scripts that can help generate the input quantities for PCET rate constant calculation or nonadiabaticity analysis. Please refer to the README file in that directory for detailed documentation. 
