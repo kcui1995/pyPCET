@@ -2,8 +2,6 @@ import numpy as np
 from ase.io import read
 import os
 
-
-
 # xyz files for the reactant and the product
 reac_xyz = "reac.xyz"
 prod_xyz = "prod.xyz"
@@ -18,7 +16,6 @@ reac_charge = 0
 reac_multiplicity = 1
 prod_charge = 1
 prod_multiplicity = 2
-
 
 
 # change the level of theory or add empirical dispersion/implicit solvent as needed, 
