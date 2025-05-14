@@ -93,7 +93,6 @@ for i,R in enumerate(Rs):
 
     kH_R[i] = system.calculate(mass=massH, T=T)
     kD_R[i] = system.calculate(mass=massD, T=T)
-    #print(np.log(kH_R[i]))
 
     # plot the wave functions and print the state contrtbutions for each R 
     # plot for proton and print for both H and D
@@ -106,9 +105,6 @@ for i,R in enumerate(Rs):
     Evib_reactant, wfc_reactant = system.get_reactant_proton_states()
     Evib_product, wfc_product = system.get_product_proton_states()
     rp = system.rp
-
-    #print(Evib_reactant/kcal2eV - Evib_reactant[0]/kcal2eV)
-    #print(Evib_product/kcal2eV - Evib_product[0]/kcal2eV)
 
     # align the zero-point energy of the reactant and product states in this plot
     if Evib_product[0] < Evib_reactant[0]:
