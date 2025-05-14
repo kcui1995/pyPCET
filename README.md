@@ -24,7 +24,7 @@ To calculate the PCET rate constant using the vibronically nonadiabatic PCET the
 1. `ReacProtonPot` (2D array or function): proton potential of the reactant state
 2. `ProdProtonPot` (2D array or function): proton potential of the product state
 
-The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 8th-order polynormial. The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV
+The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynormial. The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV
 
 3. `DeltaG` (float): reaction free energy of the PCET process in eV. This should be the free energy difference between electronic states, i.e., ZPEs should not be included
 4. `Lambda` (float): reorganization energy of the PCET reaction in eV
@@ -65,14 +65,22 @@ Other parameters that can be modified during the initialization are
 7. `NGridPot` (int): number of grid points used for FGH calculation, default = 256
 8. `Smooth` (string): method to smooth the proton potential if given as 2Darray, possible choices are 'fit_poly6', 'fit_poly8', 'bspline', default = 'fit_poly6' 
 
-When initializing, The program will automatically determine the ranges of proton position to perform subsequent calculations. Users could fine tune these ranges by parseing additional inputs `rmin`, `rmax`. 
+> [!NOTE]
+> When initializing, The program will automatically determine the range of proton position to perform subsequent calculations. If the input proton potentials are 2D arrays, the range will be the same as the input data. If the input proton potentials are callable functions, a range from -0.8 A to 0.8 A will be used. Users could fine tune these ranges by parseing additional inputs `rmin`, `rmax`. 
 
+#### Reset Parameters
+The `DeltaG`, `Lambda`, and `Vel` parameters can be reset after initialization using the `set_parameters` method. For example, one can reset the $`\Delta G`$ by
+
+```python
+dG_alt = +0.10
+system.set_parameters(DeltaG=dG_alt)
+```
 
 ### II. Calculation
 #### PCET Rate Constant
 In a typical calculation of the vibronically nonadiabatic PCET rate constant, we first need to solve the 1D Schrödinger equations for the proton moving in the proton potentials associated with the reactant and product electronic states. This calculation yields the proton vibrational energy levels and wave functions, which in turn determine the Boltzmann population of the reactant vibronic states, $`P_{\mu}`$, the overlap integral between the proton vibrational wave functions associated with the reactant and product electronic states, $`S_{\mu\nu}`$, as well as the reaction free energy for vibronic states $\mu$ and $\nu$, $`\Delta G^{\rm o}_{\mu\nu}`$. We will calculate $`P_{\mu}`$, $`S_{\mu\nu}`$, and $`\Delta G^{\rm o}_{\mu\nu}`$ for all $`\mu`$ and $`\nu`$ from 0 to `NStates`. These quantities will be fed into the rate constant expression to give the final results. 
 
-All these steps have been integrated in the method `pyPCET.calculate`.  This method takes two parameters, the mass of the particle, which should be set to the mass of the proton or deuterium, and the temperature of the system. It returns the calculated rate constant at the given condition. Follow by the previous example, we can calculate the PCET rate constant and the kinetic isotope effect (KIE) by: 
+All these steps have been integrated in the method `pyPCET.calculate()`.  This method takes two parameters, the mass of the particle, which should be set to the mass of the proton or deuterium, and the temperature of the system. It returns the calculated rate constant at the given condition. Follow by the previous example, we can calculate the PCET rate constant and the kinetic isotope effect (KIE) by: 
 ```python
 from pyPCET.units import massH, massD
 
@@ -130,7 +138,10 @@ To start an analysis, we need the following quantities:
 3. `ProdProtonPot` (1D array): Product proton potential as a function of rp in eV
 4. `Vel` (float or 1D array): electronic coupling as a function of rp or a constant in eV
 
-The input of the proton coodtinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a number. If `Vel` is given as a number, we assume it is constant along the proton coordinate. Note that the programm will not automatically interpolate or fit the input data. The users should provide data on a dense grid of the proton coordinate to ensure numerical accuracy in subsequent calculations. The `fit_poly6`, `fit_poly8`, and `bspline` functions in `functions.py` can be used for interpolation or fitting purpose. 
+The input of the proton coodtinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a number. If `Vel` is given as a number, we assume it is constant along the proton coordinate. 
+
+>[!NOTE]
+> The programm will use the input data as is without any automatic interpolation or fitting. The users should provide data on a fine grid of proton coordinate to ensure numerical accuracy in subsequent calculations. The `fit_poly6`, `fit_poly8`, and `bspline` functions in `functions.py` can be used for interpolation or fitting purpose. 
 
 In the following example, we read calculated proton potentials and electronic coupling from a file, and then spline the data using the `bspline` function in `functions.py`, 
 
