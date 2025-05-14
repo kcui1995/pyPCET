@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy.interpolate import splrep, BSpline
-from scipy.signal import find_peaks, lfilter
 import types
 import functools
 from . import units
