@@ -9,7 +9,7 @@ where $`V_{\rm el}`$ is the electronic coupling between reactant and product ele
 ```
 Here $\Delta G^{\rm o}$ is the PCET reaction free energy, $\varepsilon_\mu$ and $\varepsilon_\nu$ are the energies of reactant and product vibronic states $\mu$ and $\nu$, relative to their respective ground vibronic states. 
 
-In general, this rate constant depends on the proton donor-acceptor separation $R$, and the overall PCET rate constant should be calculated as an average over $R$. This is not implemented in this module. However, users can easily write a outer loop to perform such average, as in examples 2 to 4. 
+In general, this rate constant depends on the proton donor-acceptor separation $R$, and the overall PCET rate constant should be calculated as an average over $R$. This is not implemented in this module. However, users can easily write an outer loop to perform such average, as in examples 2 to 4. 
 
 ## Installation 
 To use the pyPCET module, simply download the code and add it to your `$PYTHONPATH` variable.
@@ -66,7 +66,7 @@ Other parameters that can be modified during the initialization are
 8. `Smooth` (string): method to smooth the proton potential if given as 2D array, possible choices are 'fit_poly6', 'fit_poly8', 'bspline', default = 'fit_poly6' 
 
 > [!NOTE]
-> When initializing, The program will automatically determine the range of proton position to perform subsequent calculations. If the input proton potentials are 2D arrays, the range will be the same as the input data. If the input proton potentials are callable functions, a range from -0.8 A to 0.8 A will be used. This default value may not work if the proton donor-acceptor distance is too large.
+> When initializing, The program will automatically determine the range of proton position to perform subsequent calculations. If the input proton potentials are 2D arrays, the range will be the same as the input data. If the input proton potentials are callable functions, a range from -0.8 A to 0.8 A will be used. This default range may not work if the proton donor-acceptor distance is too large.
 
 > [!TIP]
 >  Users could fine tune the range of proton position by parseing additional inputs `rmin`, `rmax`. 
