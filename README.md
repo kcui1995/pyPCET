@@ -95,7 +95,7 @@ k_tot_D = system.calculate(massD, T)
 KIE = k_tot_H/k_tot_D
 ```
 
-#### Analysis of the Result
+#### Analysis of the Results
 The calculated proton vibrational energy levels and wave functions can be accessed through
 ```python
 Evib_reactant, wfc_reactant = system.get_reactant_proton_states()
