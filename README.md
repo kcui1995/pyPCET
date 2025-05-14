@@ -24,7 +24,10 @@ To calculate the PCET rate constant using the vibronically nonadiabatic PCET the
 1. `ReacProtonPot` (2D array or function): proton potential of the reactant state
 2. `ProdProtonPot` (2D array or function): proton potential of the product state
 
-The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynormial. The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV
+The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynormial. The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV. 
+
+> [!TIP]
+> Always plot the fitted/interpolated proton potentials with the original data to check the fitting/interpolation quality. 
 
 3. `DeltaG` (float): reaction free energy of the PCET process in eV
 4. `Lambda` (float): reorganization energy of the PCET reaction in eV
