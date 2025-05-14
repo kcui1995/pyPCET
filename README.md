@@ -188,7 +188,10 @@ from pyPCET.units import massH
 system.calculate(massH)
 ```
 
-The program will calculate the effective proton tunneling time $`\tau_{\rm p}`$, the electronic transition time $`\tau_{\rm e}`$, the adiabaticity parameter $`p = \tau_{\rm p}/\tau_{\rm e}`$, the prefactor $`\kappa`$ which enters the general expression of the vibronic coupling in a semiclassical formalism, the vibronic coupling in the general form $`V_{\rm \mu\nu}^{(\rm sc)}`$, and the vibronic coupling in the nonadiabatic and adiabatic limits $`V_{\rm \mu\nu}^{(\rm nad)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. Note that we only implemented the analsysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). 
+The program will calculate the effective proton tunneling time $`\tau_{\rm p}`$, the electronic transition time $`\tau_{\rm e}`$, the adiabaticity parameter $`p = \tau_{\rm p}/\tau_{\rm e}`$, the prefactor $`\kappa`$ which enters the general expression of the vibronic coupling in a semiclassical formalism, the vibronic coupling in the general form $`V_{\rm \mu\nu}^{(\rm sc)}`$, and the vibronic coupling in the nonadiabatic and adiabatic limits $`V_{\rm \mu\nu}^{(\rm nad)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. 
+
+> [!NOTE]
+> We only implemented this analsysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). 
 
 The users can access the calculated quantities via
 
