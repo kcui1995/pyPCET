@@ -2,7 +2,6 @@ import numpy as np
 import numpy.linalg as la
 from scipy.optimize import curve_fit
 from scipy.integrate import simps
-from scipy.interpolate import interp1d
 from .functions import *
 from .units import *
 from .FGH_1D import FGH_1D
