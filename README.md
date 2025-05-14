@@ -152,6 +152,7 @@ The input of the proton coodtinate and the proton potentials can only be 1D arra
 In the following example, we read calculated proton potentials and electronic coupling from a file, and then spline the data using the `bspline` function in `functions.py`, 
 
 ```python
+import numpy as np
 from pyPCET import kappa_coupling 
 from pyPCET.functions import bspline 
 from scipy.interpolate import CubicSpline
