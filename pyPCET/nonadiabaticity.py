@@ -17,10 +17,10 @@ class kappa_coupling(object):
     def __init__(self, rp, ReacProtonPot, ProdProtonPot, Vel, NStates=10):
         """
         Input Quantities
-        rp (ndarray): proton coordinate along the proton axis in A
-        ReacProtonPot (ndarray): Reactant proton potential as a function of rp in eV
-        ProdProtonPot (ndarray): Product proton potential as a function of rp in eV
-        Vel (floar or ndarray): electronic coupling as a function of rp or a constant in eV
+        rp (1D array): proton coordinate along the proton axis in A
+        ReacProtonPot (1D array): Reactant proton potential as a function of rp in eV
+        ProdProtonPot (1D array): Product proton potential as a function of rp in eV
+        Vel (float or 1D array): electronic coupling as a function of rp or a constant in eV
         NStates (int): number of proton vibrational states to be calculated (only the ground state will be used), default = 10
         """
     
