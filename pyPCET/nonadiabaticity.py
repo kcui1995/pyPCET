@@ -202,7 +202,7 @@ class kappa_coupling(object):
             else:
                 pass
 
-        index_max_overlap_anti = 1
+        index_max_overlap_anti = 0
         for i in range(2*self.NStates):
             if overlap_w_anti[i] > overlap_w_anti[index_max_overlap_anti] and i != index_max_overlap_symm:
                 index_max_overlap_anti = i
