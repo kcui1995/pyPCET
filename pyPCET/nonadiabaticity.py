@@ -162,11 +162,17 @@ class kappa_coupling(object):
         sgrid = rp_in_Bohr[-1] - rp_in_Bohr[0]
         dx = sgrid/(ngrid-1)
 
-        # calculate the proton vibrational energies and wave fucntions for the reactant
+        # calculate the proton vibrational energies and wave fucntions for the ground adiabatic state
         eigvals, eigvecs = FGH_1D(ngrid, sgrid, Eg_au, mass)
+        self.AdiabaticGSProtonEnergyLevels = eigvals[:self.NStates]
+        
+        unnormalized_wfcs_adia = np.transpose(eigvecs)[:self.NStates]
+        normalized_wfcs_adia = np.array([wfci/np.sqrt(simps(wfci*wfci, self.rp)) for wfci in unnormalized_wfcs_adia])
+        self.AdiabaticGSProtonWaveFunctions = normalized_wfcs_adia
+
         tunneling_splitting = (eigvals[1]-eigvals[0])*Ha2eV
         self.V_ad = 0.5*tunneling_splitting
-
+        
         S00 = simps(self.ReacProtonWaveFunctions[0]*self.ProdProtonWaveFunctions[0], self.rp)
         self.V_nad = self.Vel_crossing*S00
         self.V_sc = self.kappa*self.V_ad
@@ -189,6 +195,12 @@ class kappa_coupling(object):
         returns the ground and excited state adiabatic proton potentials
         """
         return self.AdiabaticProtonPotGS, self.AdiabaticProtonPotES
+
+    def get_ground_adiabatic_proton_states(self):
+        """
+        returns proton vibrational energy levels and wave functions associated with the ground adiabatic electronic state
+        """
+        return self.AdiabaticGSProtonEnergyLevels, self.AdiabaticGSProtonWaveFunctions
 
     def get_nonadiabaticity_parameters(self):
         """
