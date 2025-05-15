@@ -12,9 +12,8 @@ class kappa_coupling(object):
     using the semiclassical formalism derived by Georgievskii, Y.; Stuchebrukhov, A. J. Chem. Phys. 113, 10438–10450 (2000)
     For a given pair of reactant and product proton potentials, it calculates the proton tunnling time, electron transition time, adiabaticity parameter
     and the vibronic coupling between mu=0 and nu=0 states in the general form and in nondiabatic and adiabatic limits
-    !!!NOTE!!! Currently the calculation can only be applied to mu=0 and nu=0 vibronic states
     """
-    def __init__(self, rp, ReacProtonPot, ProdProtonPot, Vel, NStates=10):
+    def __init__(self, rp, ReacProtonPot, ProdProtonPot, Vel, NStates=10, mu=0, nu=0)):
         """
         Input Quantities
         rp (1D array): proton coordinate along the proton axis in A
@@ -22,6 +21,7 @@ class kappa_coupling(object):
         ProdProtonPot (1D array): Product proton potential as a function of rp in eV
         Vel (float or 1D array): electronic coupling as a function of rp or a constant in eV
         NStates (int): number of proton vibrational states to be calculated (only the ground state will be used), default = 10
+        mu and nu (int): the pair of vibronic states to calculate the coupling, default: mu = 0, nu = 0
         """
     
         if not (isarray(rp) and isarray(ReacProtonPot) and isarray(ProdProtonPot)):
@@ -39,12 +39,16 @@ class kappa_coupling(object):
         if np.abs(np.log2(len(rp))-int(np.log2(len(rp)))) > 1e-4:
             raise ValueError("The number of grid points should be some interger power of 2. ")
 
+        if mu > NStates or nu > NStates:
+            NState = np.max(NStates, mu, nu)
+            
         self.rp = rp
         self.ReacProtonPot = ReacProtonPot
         self.ProdProtonPot = ProdProtonPot
         self.Vel = Vel
         self.NStates = NStates
-
+        self.mu = mu
+        self.nu = nu
 
     def calc_proton_vibrational_states(self, mass=massH):
         """
@@ -84,22 +88,22 @@ class kappa_coupling(object):
     def analyze_proton_potentials(self, mass=massH):
         """
         This function analyze the proton potentials and prepare for a coupling calculation by doing the following:
-        Calculate the proton vibrational ZPE of the reactant and the product
-        Shift the reactant and product proton potentials so that their ZPE levels are aligned
+        Calculate the proton vibrational energy level of the reactant and the product vibronic state
+        Shift the reactant and product proton potentials so that their energy levels are aligned
         Find the crossing point of the shifted potential curves
         Calculate the slopes of the proton potential curves at the crossing point
         """
 
         self.calc_proton_vibrational_states(mass)
-        ZPE_reac = self.ReacProtonEnergyLevels[0]
-        ZPE_prod = self.ProdProtonEnergyLevels[0]
+        E_reac = self.ReacProtonEnergyLevels[self.mu]
+        E_prod = self.ProdProtonEnergyLevels[self.nu]
 
         # align the zero-point energy of the reactant and product states in this plot
-        if ZPE_prod < ZPE_reac:
+        if E_prod < E_reac:
             dEr = 0
-            dEp = -ZPE_prod + ZPE_reac
+            dEp = -E_prod + E_reac
         else:
-            dEr = ZPE_prod - ZPE_reac
+            dEr = E_prod - E_reac
             dEp = 0
 
         self.ShiftedReacProtonPot = self.ReacProtonPot + dEr
@@ -129,14 +133,18 @@ class kappa_coupling(object):
     def calculate(self, mass=massH):
         """
         Calculate the proton tunnling time, electron transition time, adiabaticity parameter
-        and the vibronic coupling between mu=0 and nu=0 states in the general form and in nondiabatic and adiabatic limits
+        and the vibronic coupling between mu and nu states in the general form and in nondiabatic and adiabatic limits
         """
         self.analyze_proton_potentials(mass)
 
         # Calculate tau_e and tau_p 
 
         # energy of the aligned diabatic reactant and product vibrational levels
-        E0 = self.ShiftedReacProtonEnergyLevels[0]
+        E0 = self.ShiftedReacProtonEnergyLevels[self.mu]
+
+        if E0 > self.E_crossing:
+            raise RuntimeError("The tunneling energy is higher than the energy at the crossing point. ")
+
         # proton tunneling velocity in A/s
         vt = np.sqrt(2*(self.E_crossing-E0)*eV2Ha/mass)*Bohr2A/au2s
 
@@ -170,11 +178,48 @@ class kappa_coupling(object):
         normalized_wfcs_adia = np.array([wfci/np.sqrt(simps(wfci*wfci, self.rp)) for wfci in unnormalized_wfcs_adia])
         self.AdiabaticGSProtonWaveFunctions = normalized_wfcs_adia
 
-        tunneling_splitting = (eigvals[1]-eigvals[0])*Ha2eV
+        # calculate the symmetric and asymmetric combinations of the proton wave functions associated with the two diabatic states
+        # The calculated wfcs from FGH is only determined up to a +- sign
+        Smunu = simps(self.ReacProtonWaveFunctions[self.mu]*self.ProdProtonWaveFunctions[self.nu], self.rp)
+        sign = 1 if Smunu > 0  else -1
+        wfc_symm = (self.ReacProtonWaveFunctions[self.mu] + sign*self.ProdProtonWaveFunctions[self.nu])/np.sqrt(2)
+        wfc_anti = (self.ReacProtonWaveFunctions[self.mu] - sign*self.ProdProtonWaveFunctions[self.nu])/np.sqrt(2)
+        # normalize the symmetric and asymmetric wave functions 
+        wfc_symm /= np.sqrt(simps(wfc_symm**2, self.rp))
+        wfc_anti /= np.sqrt(simps(wfc_anti**2, self.rp))
+
+        # from the proton states associated with the ground adiabatic electronic state, find two distinct states with the largest overlaps
+        # with symmetric and antisymmetric combinations of the reactant and product diabatic states; 
+        # splitting between these two levels is the tunneling splitting for a given tunneling energy
+        overlap_w_symm = np.array([np.abs(simps(wfci*wfc_symm, self.rp)) for wfci in self.AdiabaticGSProtonWaveFunctions])
+        overlap_w_anti = np.array([np.abs(simps(wfci*wfc_anti, self.rp)) for wfci in self.AdiabaticGSProtonWaveFunctions])
+
+        index_max_overlap_symm = 0
+        for i in range(2*self.NStates):
+            if overlap_w_symm[i] > overlap_w_symm[index_max_overlap_symm]:
+                index_max_overlap_symm = i
+            else:
+                pass
+
+        index_max_overlap_anti = 1
+        for i in range(2*self.NStates):
+            if overlap_w_anti[i] > overlap_w_anti[index_max_overlap_anti] and i != index_max_overlap_symm:
+                index_max_overlap_anti = i
+            else:
+                pass
+
+        if overlap_w_symm[index_max_overlap_symm] < overlap_thresh or overlap_w_anti[index_max_overlap_anti] < overlap_thresh:
+            print(f"WARNING: The maximum overlap between the proton vibrational wave functions in the adiabatic potential and the symmetric/antisymmetric combinations of the wave functions in diabtic potentials is less than {overlap_thresh:.1f}. ")
+        if index_max_overlap_anti < index_max_overlap_symm:
+            print("WARNING: The identified antisymmetric state has lower energy than the identified symmetric state. ")
+        if np.abs(index_max_overlap_anti - index_max_overlap_symm) > 1:
+            print("WARNING: There are multiple states lies in between the identified symmetric and antisymmetyric states. ")
+
+        
+        tunneling_splitting = (eigvals[index_max_overlap_anti]-eigvals[index_max_overlap_symm])*Ha2eV
         self.V_ad = 0.5*tunneling_splitting
         
-        S00 = simps(self.ReacProtonWaveFunctions[0]*self.ProdProtonWaveFunctions[0], self.rp)
-        self.V_nad = self.Vel_crossing*S00
+        self.V_nad = self.Vel_crossing*Smunu
         self.V_sc = self.kappa*self.V_ad
 
 
