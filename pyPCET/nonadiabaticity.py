@@ -164,7 +164,7 @@ class kappa_coupling(object):
 
         # calculate the proton vibrational energies and wave fucntions for the ground adiabatic state
         eigvals, eigvecs = FGH_1D(ngrid, sgrid, Eg_au, mass)
-        self.AdiabaticGSProtonEnergyLevels = eigvals[:self.NStates]
+        self.AdiabaticGSProtonEnergyLevels = eigvals[:self.NStates]*Ha2eV
         
         unnormalized_wfcs_adia = np.transpose(eigvecs)[:self.NStates]
         normalized_wfcs_adia = np.array([wfci/np.sqrt(simps(wfci*wfci, self.rp)) for wfci in unnormalized_wfcs_adia])
