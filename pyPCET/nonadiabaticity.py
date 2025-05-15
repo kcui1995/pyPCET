@@ -41,7 +41,7 @@ class kappa_coupling(object):
 
         if mu > NStates or nu > NStates:
             NState = np.max(NStates, mu, nu)
-        
+
         self.rp = rp
         self.ReacProtonPot = ReacProtonPot
         self.ProdProtonPot = ProdProtonPot
@@ -50,7 +50,7 @@ class kappa_coupling(object):
         self.mu = mu
         self.nu = nu
 
-    
+
     def calc_proton_vibrational_states(self, mass=massH):
         """
         Calculate the proton vibrational states (energies and wave functions)
@@ -179,6 +179,7 @@ class kappa_coupling(object):
         normalized_wfcs_adia = np.array([wfci/np.sqrt(simps(wfci*wfci, self.rp)) for wfci in unnormalized_wfcs_adia])
         self.AdiabaticGSProtonWaveFunctions = normalized_wfcs_adia
 
+
         # calculate the symmetric and asymmetric combinations of the proton wave functions associated with the two diabatic states
         # The calculated wfcs from FGH is only determined up to a +- sign
         Smunu = simps(self.ReacProtonWaveFunctions[self.mu]*self.ProdProtonWaveFunctions[self.nu], self.rp)
@@ -216,7 +217,7 @@ class kappa_coupling(object):
         if np.abs(index_max_overlap_anti - index_max_overlap_symm) > 1:
             print("WARNING: There are multiple states lies in between the identified symmetric and antisymmetyric states. ")
 
-        
+
         tunneling_splitting = (eigvals[index_max_overlap_anti]-eigvals[index_max_overlap_symm])*Ha2eV
         self.V_ad = 0.5*tunneling_splitting
         
