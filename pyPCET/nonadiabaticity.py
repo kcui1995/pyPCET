@@ -11,7 +11,7 @@ class kappa_coupling(object):
     This class is used to probe the nonadiabaticity of a PCET reaction
     using the semiclassical formalism derived by Georgievskii, Y.; Stuchebrukhov, A. J. Chem. Phys. 113, 10438–10450 (2000)
     For a given pair of reactant and product proton potentials, it calculates the proton tunnling time, electron transition time, adiabaticity parameter
-    and the vibronic coupling between mu=0 and nu=0 states in the general form and in nondiabatic and adiabatic limits
+    and the vibronic coupling between mu and nu states in the general form and in nondiabatic and adiabatic limits
     """
     def __init__(self, rp, ReacProtonPot, ProdProtonPot, Vel, NStates=10, mu=0, nu=0):
         """
@@ -179,14 +179,13 @@ class kappa_coupling(object):
         normalized_wfcs_adia = np.array([wfci/np.sqrt(simps(wfci*wfci, self.rp)) for wfci in unnormalized_wfcs_adia])
         self.AdiabaticGSProtonWaveFunctions = normalized_wfcs_adia
 
-
         # calculate the symmetric and asymmetric combinations of the proton wave functions associated with the two diabatic states
         # The calculated wfcs from FGH is only determined up to a +- sign
         Smunu = simps(self.ReacProtonWaveFunctions[self.mu]*self.ProdProtonWaveFunctions[self.nu], self.rp)
         sign = 1 if Smunu > 0  else -1
         wfc_symm = (self.ReacProtonWaveFunctions[self.mu] + sign*self.ProdProtonWaveFunctions[self.nu])/np.sqrt(2)
         wfc_anti = (self.ReacProtonWaveFunctions[self.mu] - sign*self.ProdProtonWaveFunctions[self.nu])/np.sqrt(2)
-        # normalize the symmetric and asymmetric wave functions 
+        # normalize the constructed symmetric and asymmetric wave functions 
         wfc_symm /= np.sqrt(simps(wfc_symm**2, self.rp))
         wfc_anti /= np.sqrt(simps(wfc_anti**2, self.rp))
 
@@ -216,7 +215,6 @@ class kappa_coupling(object):
             print("WARNING: The identified antisymmetric state has lower energy than the identified symmetric state. ")
         if np.abs(index_max_overlap_anti - index_max_overlap_symm) > 1:
             print("WARNING: There are multiple states lies in between the identified symmetric and antisymmetyric states. ")
-
 
         tunneling_splitting = (eigvals[index_max_overlap_anti]-eigvals[index_max_overlap_symm])*Ha2eV
         self.V_ad = 0.5*tunneling_splitting
