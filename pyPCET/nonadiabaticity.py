@@ -13,7 +13,7 @@ class kappa_coupling(object):
     For a given pair of reactant and product proton potentials, it calculates the proton tunnling time, electron transition time, adiabaticity parameter
     and the vibronic coupling between mu=0 and nu=0 states in the general form and in nondiabatic and adiabatic limits
     """
-    def __init__(self, rp, ReacProtonPot, ProdProtonPot, Vel, NStates=10, mu=0, nu=0)):
+    def __init__(self, rp, ReacProtonPot, ProdProtonPot, Vel, NStates=10, mu=0, nu=0):
         """
         Input Quantities
         rp (1D array): proton coordinate along the proton axis in A
@@ -41,7 +41,7 @@ class kappa_coupling(object):
 
         if mu > NStates or nu > NStates:
             NState = np.max(NStates, mu, nu)
-            
+        
         self.rp = rp
         self.ReacProtonPot = ReacProtonPot
         self.ProdProtonPot = ProdProtonPot
@@ -50,6 +50,7 @@ class kappa_coupling(object):
         self.mu = mu
         self.nu = nu
 
+    
     def calc_proton_vibrational_states(self, mass=massH):
         """
         Calculate the proton vibrational states (energies and wave functions)
@@ -130,7 +131,7 @@ class kappa_coupling(object):
         self.slope_prod = ( self.ShiftedProdProtonPot[rp_crossing_index] - self.ShiftedProdProtonPot[rp_crossing_index-1]) / (self.rp[rp_crossing_index] - self.rp[rp_crossing_index-1])
 
 
-    def calculate(self, mass=massH):
+    def calculate(self, mass=massH, overlap_thresh=0.8):
         """
         Calculate the proton tunnling time, electron transition time, adiabaticity parameter
         and the vibronic coupling between mu and nu states in the general form and in nondiabatic and adiabatic limits
@@ -172,9 +173,9 @@ class kappa_coupling(object):
 
         # calculate the proton vibrational energies and wave fucntions for the ground adiabatic state
         eigvals, eigvecs = FGH_1D(ngrid, sgrid, Eg_au, mass)
-        self.AdiabaticGSProtonEnergyLevels = eigvals[:self.NStates]*Ha2eV
+        self.AdiabaticGSProtonEnergyLevels = eigvals[:2*self.NStates]*Ha2eV
         
-        unnormalized_wfcs_adia = np.transpose(eigvecs)[:self.NStates]
+        unnormalized_wfcs_adia = np.transpose(eigvecs)[:2*self.NStates]
         normalized_wfcs_adia = np.array([wfci/np.sqrt(simps(wfci*wfci, self.rp)) for wfci in unnormalized_wfcs_adia])
         self.AdiabaticGSProtonWaveFunctions = normalized_wfcs_adia
 
