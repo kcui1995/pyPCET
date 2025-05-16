@@ -189,10 +189,6 @@ system.calculate(massH)
 ```
 
 The program will calculate the effective proton tunneling time $`\tau_{\rm p}`$, the electronic transition time $`\tau_{\rm e}`$, the adiabaticity parameter $`p = \tau_{\rm p}/\tau_{\rm e}`$, the prefactor $`\kappa`$ which enters the general expression of the vibronic coupling in a semiclassical formalism, the vibronic coupling in the general form $`V_{\rm \mu\nu}^{(\rm sc)}`$, and the vibronic coupling in the nonadiabatic and adiabatic limits $`V_{\rm \mu\nu}^{(\rm nad)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. 
-
-> [!NOTE]
-> We only implemented this analsysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). 
-
 The users can access the calculated quantities via
 
 ```python
@@ -201,6 +197,11 @@ V_sc, V_nad, V_ad = system.get_vibronic_couplings()
 ```
 
 At a given temperature, the reaction is vibronically nonadiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \ll k_{\rm B}T`$, or vibronically adiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \gg k_{\rm B}T`$. An electronically nonadiabatic reaction is characterized by $`p \ll 1`$, $`\kappa < 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm nad)}`$, whereas an electronically adiabatic reaction is characterized by $`p \gg 1`$, $`\kappa \approx 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm ad)}`$. 
+
+By default, we will perform the analysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). The user can set the `mu` and `nu` parameters when initializing to perform analysis for other $`\mu`$, $`\nu`$ pairs. 
+```python
+system = kappa_coupling(rp, ReacProtonPot(rp), ProdProtonPot(rp), Vel_rp(rp), mu=1, nu=1)
+```
 
 ### IV. Some Useful Scripts
 In the directory `scripts/` we provide several useful scripts that can help generate the input quantities for PCET rate constant calculation or nonadiabaticity analysis. Please refer to the README file in that directory for detailed documentation. 
