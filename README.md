@@ -72,7 +72,11 @@ Other parameters that can be set during initialization are
 > When initializing, The program will automatically determine the range of the proton coordinate to perform subsequent calculations. If the input proton potentials are 2D arrays, the range will be the same as the input data. If the input proton potentials are callable functions, a range from -0.8 A to 0.8 A will be used. This default range may not work when the proton donor-acceptor distance is too large.
 
 > [!TIP]
->  Users could fine tune the range of the proton coordinate by providing additional input parameters `rmin`, `rmax` during initialization. 
+>  Users could fine tune the range of the proton coordinate by providing additional input parameters `rmin`, `rmax` during initialization.
+
+```python
+system = pyPCET(ReacProtonPot, ProdProtonPot, dG, Lambda, Vel=Vel, rmin=-1.5, rmax=1.5)
+```
 
 #### Reset Parameters
 The `DeltaG`, `Lambda`, and `Vel` parameters can be reset after initialization using the `set_parameters` method. For example, one can reset `DeltaG` by
