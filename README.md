@@ -62,7 +62,7 @@ system = pyPCET(ReacProtonPot, ProdProtonPot, dG, Lambda, Vel=Vel)
 
 
 #### Other Parameters
-Other parameters that can be modified during the initialization are
+Other parameters that can be set during initialization are
 
 6. `NStates` (int): number of proton vibrational states to be calculated, default = 10. One should test the convergence with respect to this quantity. 
 7. `NGridPot` (int): number of grid points used for FGH calculation, default = 256
@@ -72,7 +72,7 @@ Other parameters that can be modified during the initialization are
 > When initializing, The program will automatically determine the range of the proton coordinate to perform subsequent calculations. If the input proton potentials are 2D arrays, the range will be the same as the input data. If the input proton potentials are callable functions, a range from -0.8 A to 0.8 A will be used. This default range may not work when the proton donor-acceptor distance is too large.
 
 > [!TIP]
->  Users could fine tune the range of proton position by providing additional input parameters `rmin`, `rmax`. 
+>  Users could fine tune the range of the proton coordinate by providing additional input parameters `rmin`, `rmax` during initialization. 
 
 #### Reset Parameters
 The `DeltaG`, `Lambda`, and `Vel` parameters can be reset after initialization using the `set_parameters` method. For example, one can reset `DeltaG` by
@@ -198,7 +198,7 @@ V_sc, V_nad, V_ad = system.get_vibronic_couplings()
 
 At a given temperature, the reaction is vibronically nonadiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \ll k_{\rm B}T`$, or vibronically adiabatic if $`V_{\rm \mu\nu}^{(\rm sc)} \gg k_{\rm B}T`$. An electronically nonadiabatic reaction is characterized by $`p \ll 1`$, $`\kappa < 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm nad)}`$, whereas an electronically adiabatic reaction is characterized by $`p \gg 1`$, $`\kappa \approx 1`$, and $`V_{\rm \mu\nu}^{(\rm sc)} \approx V_{\rm \mu\nu}^{(\rm ad)}`$. 
 
-By default, we will perform the analysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). The user can set the `mu` and `nu` parameters when initializing to perform analysis for other $`\mu`$, $`\nu`$ pairs. 
+By default, we will perform the analysis for the ground vibronic states (i.e., $`\mu=0`$, $`\nu=0`$). The user can set the `mu` and `nu` parameters during initialization to perform analysis for other $`\mu`$, $`\nu`$ pairs. 
 ```python
 system = kappa_coupling(rp, ReacProtonPot(rp), ProdProtonPot(rp), Vel_rp(rp), mu=1, nu=1)
 ```
