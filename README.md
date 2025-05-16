@@ -210,7 +210,7 @@ Evib_ad, wfc_ad = system.get_ground_adiabatic_proton_states()
 ```
 
 > [!NOTE]
-> The calculations of $`\tau_{\rm p}`$, $`\tau_{\rm e}`$, $`p`$, $`\kappa`$, and $`V_{\rm \mu\nu}^{(\rm nad)}`$ does not rely on this algorithm. The analysis of electron-proton nonadiabaticity thus can still be performed even when warning messages appear. 
+> The calculations of $`\tau_{\rm p}`$, $`\tau_{\rm e}`$, $`p`$, $`\kappa`$, and $`V_{\rm \mu\nu}^{(\rm nad)}`$ does not rely on this algorithm. The degree of electron-proton nonadiabaticity thus can still be determined even when warning messages appear. 
 
 
 ### IV. Some Useful Scripts
