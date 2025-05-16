@@ -212,7 +212,7 @@ class kappa_coupling(object):
         if overlap_w_symm[index_max_overlap_symm] < overlap_thresh or overlap_w_anti[index_max_overlap_anti] < overlap_thresh:
             print(f"WARNING: The maximum overlap between the proton vibrational wave functions in the adiabatic potential and the symmetric/antisymmetric combinations of the wave functions in diabtic potentials is less than {overlap_thresh:.1f}. ")
         if index_max_overlap_anti < index_max_overlap_symm:
-            print(f"WARNING: The identified antisymmetric state has lower energy than the identified symmetric state. The symmetric state is state {index_max_overlap_symm:d} and the antisymmetric state is state {index_max_overlap_anti:d}. ")
+            print(f"WARNING: The identified antisymmetric state is lower in energy than the identified symmetric state. The symmetric state is state {index_max_overlap_symm:d} and the antisymmetric state is state {index_max_overlap_anti:d}. ")
         if np.abs(index_max_overlap_anti - index_max_overlap_symm) > 1:
             print(f"WARNING: There are multiple states lies in between the identified symmetric and antisymmetyric states. The symmetric state is state {index_max_overlap_symm:d} and the antisymmetric state is state {index_max_overlap_anti:d}. ")
 
