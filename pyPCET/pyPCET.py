@@ -73,16 +73,17 @@ class pyPCET(object):
             raise TypeError("'ProdProtonPot' must be a 2D array with shape (N, 2) or a callable function")
 
         # determine the range of proton position for subsequent calculations
-        if 'rmin0' in locals() and 'rmin1' in locals() and 'rmin2' in locals():
-            rmin = np.min([rmin0, rmin1, rmin2])
-        elif 'rmin' in kwargs.keys():
+        if 'rmin' in kwargs.keys():
             rmin = kwargs['rmin']
+        elif 'rmin1' in locals() and 'rmin2' in locals():
+            rmin = np.min([rmin1, rmin2])
         else:
             rmin = -0.8
-        if 'rmax0' in locals() and 'rmax1' in locals() and 'rmax2' in locals():
-            rmax = np.max([rmax0, rmax1, rmax2])
-        elif 'rmax' in kwargs.keys():
+        
+        if 'rmax' in kwargs.keys():
             rmax = kwargs['rmax']
+        elif 'rmax1' in locals() and 'rmax2' in locals():
+            rmax = np.max([rmax1, rmax2])
         else:
             rmax = 0.8
         self.rp = np.linspace(rmin, rmax, NGridPot)
