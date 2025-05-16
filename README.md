@@ -202,6 +202,16 @@ By default, we will perform the analysis for the ground vibronic states (i.e., $
 ```python
 system = kappa_coupling(rp, ReacProtonPot(rp), ProdProtonPot(rp), Vel_rp(rp), mu=1, nu=1)
 ```
+> [!CAUTION]
+> This program uses a general algorithm to automatically identify the proton vibrational states with symmetric and antisymmetric wave functions in the ground adidabatic proton potential, which are needed to calculate $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. The algorithm is applicable for any choices of $`\mu`$, $`\nu`$ states. However, it may fail in certain circumstances and a WARNING message will appear. In this case, the user should check the proton vibrational wave functions associated with the ground adiabatic electronic state manually to avoide unmeaningful output of $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. These data can be accesses via
+
+```python
+Evib_ad, wfc_ad = system.get_ground_adiabatic_proton_states()
+```
+
+> [!NOTE]
+> The calculations of $`\tau_{\rm p}`$, $`\tau_{\rm e}`$, $`p`$, $`\kappa`$, and $`V_{\rm \mu\nu}^{(\rm nad)}`$ does not rely on this algorithm. The electronic nonadiabaticity analysis thus can still be performed even when warning messages appear. 
+
 
 ### IV. Some Useful Scripts
 In the directory `scripts/` we provide several useful scripts that can help generate the input quantities for PCET rate constant calculation or nonadiabaticity analysis. Please refer to the README file in that directory for detailed documentation. 
