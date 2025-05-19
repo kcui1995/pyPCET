@@ -137,7 +137,7 @@ for i,R in enumerate(Rs):
     ax2.tick_params(labelsize=14)
 
     plt.tight_layout()
-    plt.savefig(f'Proton_states_H_R{R:.2f}.pdf')
+    plt.savefig(f'Proton_states_H_R{R:.2f}.png', dpi=300)
     plt.clf()
 
     # print a table for these quantities
