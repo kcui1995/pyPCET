@@ -195,7 +195,7 @@ color1 = '#ff7700'
 color2 = (0.1,0.6,0.2)
 
 # the integration should be from 0 to infinity, but in reality we perform the integral in the interval that the integrand reaches zero at both limits
-R_fine_grid = np.linspace(2.1, 4.0, 500) 
+R_fine_grid = np.linspace(2.0, 4.0, 500) 
 
 # Fit k(R) by fitting logk(R) to a quadratic function
 # !!!NOTE!!! Always check if k_PCET * P(R) reaches zero at the limit of your sampled R values
@@ -241,43 +241,27 @@ print(f'KIE = {ave_kH/ave_kD:.2f}')
 
 
 #=========================================================================================
-# plot k(R), P(R), k(R)*P(R) for H and D 
+# plot k(R), P(R), k(R)*P(R) for H
 #=========================================================================================
 
-fig = plt.figure(figsize=(9,4.5))
-gs = fig.add_gridspec(ncols=2, wspace=0)
-ax1,ax2 = gs.subplots(sharex=True, sharey=True)
+plt.figure(figsize=(4.8,4.5))
 
-ax1.set_title('H', fontsize=18)
-ax1.plot(R_fine_grid, kH_fine_grid/np.max(kH_fine_grid), '-', lw=2, color=color1, label=r'$k_{\rm PCET}$')
-ax1.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='$P(R)$')
-ax1.plot(R_fine_grid, PR*kH_fine_grid/np.max(PR*kH_fine_grid), '-', lw=2, color='k', label=r'$k_{\rm PCET}\times P(R)$')
+plt.title('H', fontsize=20)
+plt.plot(R_fine_grid, kH_fine_grid/np.max(kH_fine_grid), '-', lw=2, color=color1, label=r'$k_{\rm PCET}(R)$')
+plt.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='$P(R)$')
+plt.plot(R_fine_grid, PR*kH_fine_grid/np.max(PR*kH_fine_grid), '-', lw=2, color='k', label=r'$P(R)k_{\rm PCET}(R)$')
 
-ax1.axvline(x=R_eq, linewidth=1.5, color='darkgray', linestyle=(0, (3, 3)))
-ax1.axvline(x=Rmax_H[0], linewidth=1.5, color='k', linestyle=(0, (3, 3)))
+plt.axvline(x=R_eq, linewidth=1.5, color='darkgray', linestyle=(0, (3, 3)))
+plt.axvline(x=Rmax_H[0], linewidth=1.5, color='k', linestyle=(0, (3, 3)))
 
-ax1.set_xlim(2.10,3.7)
-ax1.set_ylim(0,1.2)
-ax1.set_xlabel(r'$R$ / $\rm \AA$', fontsize=16)
-ax1.set_yticks([])
-ax1.tick_params(labelsize=14)
+plt.legend(fontsize=16,frameon=False, loc=1)
+plt.xlim(2.10,3.7)
+plt.ylim(0,1.2)
+plt.xlabel(r'$R$ / $\rm \AA$', fontsize=18)
+plt.xticks(np.arange(2.25,3.75,0.25), fontsize=16)
+plt.yticks([])
 
-ax2.set_title('D', fontsize=18)
-ax2.plot(R_fine_grid, kD_fine_grid/np.max(kD_fine_grid), '-', lw=2, color=color1, label=r'$k_{\rm PCET}$')
-ax2.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='$P(R)$')
-ax2.plot(R_fine_grid, PR*kD_fine_grid/np.max(PR*kD_fine_grid), '-', lw=2, color='k', label=r'$k_{\rm PCET}\times P(R)$')
-
-ax2.axvline(x=R_eq, linewidth=1.5, color='darkgray', linestyle=(0, (3, 3)))
-ax2.axvline(x=Rmax_D[0], linewidth=1.5, color='k', linestyle=(0, (3, 3)))
-
-ax1.legend(fontsize=15,frameon=False, loc=1)
-ax2.set_xlim(2.10,3.7)
-ax2.set_ylim(0,1.2)
-ax2.set_xlabel(r'$R$ / $\rm \AA$', fontsize=16)
-ax2.set_yticks([])
-ax2.tick_params(labelsize=14)
 
 plt.tight_layout()
-plt.savefig('kR-PR.pdf')
+plt.savefig('kR-PR.png', dpi=300)
 plt.clf()
-
