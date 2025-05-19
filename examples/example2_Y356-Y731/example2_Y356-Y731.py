@@ -72,7 +72,7 @@ ax2.set_xticks(np.arange(-1.0,1.5,0.5))
 ax1.tick_params(labelsize=14)
 ax2.tick_params(labelsize=14)
 plt.tight_layout()
-plt.savefig('Proton_potentials.pdf')
+plt.savefig('Proton_potentials.png', dpi=300)
 plt.clf()
 
 
