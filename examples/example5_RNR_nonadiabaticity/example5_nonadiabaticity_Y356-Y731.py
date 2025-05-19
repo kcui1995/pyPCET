@@ -92,7 +92,7 @@ plt.xticks(np.arange(-0.6,0.8,0.2), fontsize=16)
 plt.yticks(fontsize=16)
 
 plt.tight_layout()
-plt.savefig('Proton_pot_w_slope_Y356_Y731.pdf')
+plt.savefig('Proton_pot_w_slope_Y356_Y731.png', dpi=300)
 plt.clf()
 
 
@@ -116,5 +116,5 @@ plt.xticks(np.arange(-0.6,0.8,0.2), fontsize=16)
 plt.yticks(fontsize=16)
 
 plt.tight_layout()
-plt.savefig('Proton_pot_adiabatic_Y356_Y731.pdf')
+plt.savefig('Proton_pot_adiabatic_Y356_Y731.png', dpi=300)
 
