@@ -22,7 +22,7 @@ from scipy.optimize import curve_fit
 Rs = np.array([3.057,3.157,3.207,3.257,3.307,3.357,3.379,3.407,3.457,3.507,3.557,3.607,3.657,3.757,3.857,3.957,4.057,4.157,4.257])
 
 Lambda = 0.83               # Units: eV. Inner sphere contribution only.
-Vel = 0.10                  # Units: eV. Vel is not needed for KIE calculation, use a default value of 1 kcal/mol
+Vel = 0.10                  # Units: eV. Vel is not needed for KIE calculation. 
 T = 300                     # Units: K
 
 #rho_M is the electronic density of states for a pristine graphene slab from a periodic planewave DFT calculation.
@@ -37,7 +37,7 @@ rho_DOS = rho_M[:,1]
 DeltaG0_H = 0.55 #eV
 DeltaG0_D = 0.55-0.009296397 #eV
 
-NStates = 10              # how many states to include in rate constant calculation
+NStates = 10               # how many states to include in rate constant calculation
 NStates_to_show = 9        # how many states to plot/print
 
 #==========================================================================================
