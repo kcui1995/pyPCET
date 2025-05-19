@@ -77,7 +77,7 @@ plt.xticks(fontsize=14)
 plt.yticks(fontsize=14)
 plt.tight_layout()
 
-plt.savefig('EDL_model.pdf')
+plt.savefig('EDL_model.png', dpi=300)
 
 # This defines the Buckingham potentials using the coefficients determined from fitting DFT data.
 # Reactant: CoTPP + H_3O^+ non-bonded interaction
@@ -253,33 +253,18 @@ for n,E_appl in enumerate(E_appl_list):
 # Thermally average the PCET rate constant over R
 #=========================================================================================
 
-    color1 = '#ff7700'
-    color2 = (0.1,0.6,0.2)
-
-
     # the integration should be from 0 to infinity, but in reality we perform the integral in the interval that the integrand reaches zero at both limits
 
-    # Interpolate k(R)
-    # In this calculation, at the smallest sampled R = 2.37A, k_PCET * P(R) is non-zero, 
-    # so we need to extrapolate k_PCET data to properly perform the integration from 0 to infinity
-    # !!!NOTE!!! Always check if k_PCET * P(R) reaches zero at the limit of your sampled R values
-
-    # Different interpolation and extrapolation method has been tested, they give similar KIE  
-    # Interpolate log(k) then take the exponential
     # Directly interpolate k
     kH_fine_grid = interp1d(Rs, kH_R, kind='linear', fill_value='extrapolate')(R_fine_grid)
     kD_fine_grid = interp1d(Rs, kD_R, kind='linear', fill_value='extrapolate')(R_fine_grid)
-
 
     # perform thermal average and print the final results
     Rmax_H = R_fine_grid[find_peaks(PR*kH_fine_grid)[0]]
     Rmax_D = R_fine_grid[find_peaks(PR*kD_fine_grid)[0]]
 
-
-
     ave_kH_of_E_appl = simps(PR*kH_fine_grid, R_fine_grid)
     ave_kD_of_E_appl = simps(PR*kD_fine_grid, R_fine_grid)
-
 
     print()
     print(f'Applied Potential= {E_appl:.2f} V vs SHE')
