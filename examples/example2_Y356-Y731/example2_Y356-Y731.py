@@ -81,17 +81,14 @@ plt.clf()
 #=========================================================================================
 
 kH_R = np.zeros(len(Rs))
-kD_R = np.zeros(len(Rs))
 
 for i,R in enumerate(Rs):
     print(f'Calculating... R = {R:.2f}A')
     system = pyPCET(ReacProtonPot_R[i], ProdProtonPot_R[i], DeltaG=DeltaG, Lambda=Lambda, Vel=Vel, NStates=NStates, rmin=-rlim[i], rmax=rlim[i], NGridiPot=512)
 
     kH_R[i] = system.calculate(mass=massH, T=T)
-    kD_R[i] = system.calculate(mass=massD, T=T)
 
     # plot the wave functions and print the state contrtbutions for each R 
-    # plot for proton and print for both H and D
 
     fig = plt.figure(figsize=(9,4.5))
     gs = fig.add_gridspec(ncols=2, wspace=0)
@@ -143,7 +140,6 @@ for i,R in enumerate(Rs):
     # print a table for these quantities
     # write to a file
     with open(f'rate_constant_contribution_R{R:.2f}A.log', 'w') as outfp:
-        # for H
         Pu = system.get_reactant_state_distributions()
         Suv = system.get_proton_overlap_matrix()
         dGuv = system.get_reaction_free_energy_matrix()
@@ -153,25 +149,6 @@ for i,R in enumerate(Rs):
         percentage_contribution = kuv/k_tot
 
         outfp.write(f'\nR = {R:.2f}A\n')
-        outfp.write('\nH\n' + '='*125 + '\n')
-        outfp.write('(u, v)\t\tP_u\t\t\t|S_uv|\t\tDelta G_uv / eV\t\tDelta G^#_uv / eV\t% Contrib.\n')
-        outfp.write('-'*125 + '\n')
-        for u in range(NStates_to_show):
-            for v in range(NStates_to_show):
-                outfp.write(f'({u:d}, {v:d})\t\t{Pu[u]:.3e}\t\t{np.abs(Suv[u,v]):.3e}\t\t{dGuv[u,v]:+.3f}\t\t\t{dGa_uv[u,v]:.3f}\t\t\t{percentage_contribution[u,v]*100:.1f}\n')
-        outfp.write('='*125 + '\n\n')
-
-        # for D
-        system.calculate(mass=massD, T=T)
-        Pu = system.get_reactant_state_distributions()
-        Suv = system.get_proton_overlap_matrix()
-        dGuv = system.get_reaction_free_energy_matrix()
-        dGa_uv = system.get_activation_free_energy_matrix()
-        kuv = system.get_kinetic_contribution_matrix()
-        k_tot = system.get_total_rate_constant()
-        percentage_contribution = kuv/k_tot
-
-        outfp.write('\nD\n' + '='*125 + '\n')
         outfp.write('(u, v)\t\tP_u\t\t\t|S_uv|\t\tDelta G_uv / eV\t\tDelta G^#_uv / eV\t% Contrib.\n')
         outfp.write('-'*125 + '\n')
         for u in range(NStates_to_show):
@@ -180,11 +157,12 @@ for i,R in enumerate(Rs):
         outfp.write('='*125 + '\n\n')
 
 
-# Print PCET rate constants for H and D at each R to a file
+
+# Print PCET rate constants for H at each R to a file
 with open('kPCET_data.log', 'w') as outfp:
-    outfp.write('# R_PT/A\tk_H/s^-1\tk_D/s^-1\n')
+    outfp.write('# R_PT/A\tk_H/s^-1\n')
     for i,R in enumerate(Rs):
-        outfp.write(f'{R:.2f}\t\t{kH_R[i]:.4e}\t{kD_R[i]:.4e}\n')
+        outfp.write(f'{R:.2f}\t\t{kH_R[i]:.4e}\n')
 
 
 #=========================================================================================
@@ -207,7 +185,6 @@ a1, b1, c1 = curve_fit(quadratic, Rs, np.log(kH_R))[0]
 a2, b2, c2 = curve_fit(quadratic, Rs, np.log(kD_R))[0]
 
 kH_fine_grid = np.exp(quadratic(R_fine_grid, a1, b1, c1))
-kD_fine_grid = np.exp(quadratic(R_fine_grid, a2, b2, c2))
 
 # P(R) is calculated from umbrella sampling
 # Read the umbrella sampling data from file and fit logP(R) to a 4th order polynomial
@@ -226,18 +203,13 @@ R_eq = R_fine_grid[find_peaks(PR)[0]]
 
 # perform thermal average and print the final results
 Rmax_H = R_fine_grid[find_peaks(PR*kH_fine_grid)[0]]
-Rmax_D = R_fine_grid[find_peaks(PR*kD_fine_grid)[0]]
 
 
 ave_kH = simps(PR*kH_fine_grid, R_fine_grid)
-ave_kD = simps(PR*kD_fine_grid, R_fine_grid)
 
 print()
 print(f'Dominant R for H = {Rmax_H[0]:.2f}A')
-print(f'Dominant R for D = {Rmax_D[0]:.2f}A')
 print(f'k_H_tot = {ave_kH:.4e} s^-1')
-print(f'k_D_tot = {ave_kD:.4e} s^-1')
-print(f'KIE = {ave_kH/ave_kD:.2f}')
 
 
 #=========================================================================================
