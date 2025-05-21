@@ -157,7 +157,6 @@ for i,R in enumerate(Rs):
         outfp.write('='*125 + '\n\n')
 
 
-
 # Print PCET rate constants for H at each R to a file
 with open('kPCET_data.log', 'w') as outfp:
     outfp.write('# R_PT/A\tk_H/s^-1\n')
