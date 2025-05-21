@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pyPCET import pyPCET
 from pyPCET.functions import bspline 
-from pyPCET.units import massH, massD
+from pyPCET.units import massH
 from pyPCET.units import kcal2eV
 from scipy.integrate import simps
 from scipy.signal import find_peaks
