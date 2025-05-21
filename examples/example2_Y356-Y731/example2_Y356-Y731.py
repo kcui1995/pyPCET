@@ -181,7 +181,6 @@ def quadratic(x, a, b, c):
     return a*x*x + b*x + c
 
 a1, b1, c1 = curve_fit(quadratic, Rs, np.log(kH_R))[0]
-a2, b2, c2 = curve_fit(quadratic, Rs, np.log(kD_R))[0]
 
 kH_fine_grid = np.exp(quadratic(R_fine_grid, a1, b1, c1))
 
