@@ -156,7 +156,7 @@ fr = open(reanew,"w")
 fr.write(str(natom)+"\n")
 fr.write("Reactant with D and A atoms along the Z-axis and midpoint at (0,0,0): DA distance %10.6f \u212B\n" % rda_distance)
 for i in range(natom):
-   s = "%s %15.8f %15.8f %15.8f\n" % (catom[i],posr_new[0][i],posr_new[1][i],posr_new[2][i])
+   s = "%-2s %15.8f %15.8f %15.8f\n" % (catom[i],posr_new[0][i],posr_new[1][i],posr_new[2][i])
    fr.write(s)
 fr.close()
 
