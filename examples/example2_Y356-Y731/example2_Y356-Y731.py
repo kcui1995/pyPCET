@@ -217,9 +217,9 @@ print(f'k_H_tot = {ave_kH:.4e} s^-1')
 plt.figure(figsize=(4.8,4.5))
 
 plt.title('H', fontsize=20)
-plt.plot(R_fine_grid, kH_fine_grid/np.max(kH_fine_grid), '-', lw=2, color=color1, label=r'$k_{\rm PCET}(R)$')
+plt.plot(R_fine_grid, kH_fine_grid/np.max(kH_fine_grid), '-', lw=2, color=color1, label=r'$k(R)$')
 plt.plot(R_fine_grid, PR/np.max(PR), '-', lw=2, color=color2, label='$P(R)$')
-plt.plot(R_fine_grid, PR*kH_fine_grid/np.max(PR*kH_fine_grid), '-', lw=2, color='k', label=r'$P(R)k_{\rm PCET}(R)$')
+plt.plot(R_fine_grid, PR*kH_fine_grid/np.max(PR*kH_fine_grid), '-', lw=2, color='k', label=r'$P(R)k(R)$')
 
 plt.axvline(x=R_eq, linewidth=1.5, color='darkgray', linestyle=(0, (3, 3)))
 plt.axvline(x=Rmax_H[0], linewidth=1.5, color='k', linestyle=(0, (3, 3)))
