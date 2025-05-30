@@ -82,8 +82,46 @@ for i,R in enumerate(Rs):
     kH_R[i] = system.calculate(mass=massH, T=T)
     kD_R[i] = system.calculate(mass=massD, T=T)
 
-    # Plot of the wave functions and print of the contributions are omitted in this example
+    # Plotting of the wave functions is omitted in this example
     # They are the same as in the electrochemical case because the same proton potentials are used
+    # Only print the contributions of the vibronic states
+
+    with open(f'rate_constant_contribution_R{R:.2f}A.log', 'w') as outfp:
+        # for H
+        Pu = system.get_reactant_state_distributions()
+        Suv = system.get_proton_overlap_matrix()
+        dGuv = system.get_reaction_free_energy_matrix()
+        dGa_uv = system.get_activation_free_energy_matrix()
+        kuv = system.get_kinetic_contribution_matrix()
+        k_tot = system.get_total_rate_constant()
+        percentage_contribution = kuv/k_tot
+
+        outfp.write(f'\nR = {R:.2f}A, epsilon = 0, eta = 0\n')
+        outfp.write('\nH\n' + '='*125 + '\n')
+        outfp.write('(u, v)\t\tP_u\t\t\t|S_uv|^2\t\tDelta G_uv / eV\t\tDelta G^#_uv / eV\t% Contrib.\n')
+        outfp.write('-'*125 + '\n')
+        for u in range(NStates_to_show):
+            for v in range(NStates_to_show):
+                outfp.write(f'({u:d}, {v:d})\t\t{Pu[u]:.3e}\t\t{Suv[u,v]*Suv[u,v]:.3e}\t\t{dGuv[u,v]:+.3f}\t\t\t{dGa_uv[u,v]:.3f}\t\t\t{percentage_contribution[u,v]*100:.1f}\n')
+        outfp.write('='*125 + '\n\n')
+
+        # for D
+        system.calculate(mass=massD, T=T)
+        Pu = system.get_reactant_state_distributions()
+        Suv = system.get_proton_overlap_matrix()
+        dGuv = system.get_reaction_free_energy_matrix()
+        dGa_uv = system.get_activation_free_energy_matrix()
+        kuv = system.get_kinetic_contribution_matrix()
+        k_tot = system.get_total_rate_constant()
+        percentage_contribution = kuv/k_tot
+
+        outfp.write('\nD\n' + '='*125 + '\n')
+        outfp.write('(u, v)\t\tP_u\t\t\t|S_uv|^2\t\tDelta G_uv / eV\t\tDelta G^#_uv / eV\t% Contrib.\n')
+        outfp.write('-'*125 + '\n')
+        for u in range(NStates_to_show):
+            for v in range(NStates_to_show):
+                outfp.write(f'({u:d}, {v:d})\t\t{Pu[u]:.3e}\t\t{Suv[u,v]*Suv[u,v]:.3e}\t\t{dGuv[u,v]:+.3f}\t\t\t{dGa_uv[u,v]:.3f}\t\t\t{percentage_contribution[u,v]*100:.1f}\n')
+        outfp.write('='*125 + '\n\n')
 
 # Print PCET rate constants for H and D at each R to a file
 with open('kPCET_data.log', 'w') as outfp:
