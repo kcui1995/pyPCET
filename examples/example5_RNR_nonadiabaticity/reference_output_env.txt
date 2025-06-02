@@ -1,0 +1,7 @@
+tau_p = 2.411e-16 s
+tau_e = 5.176e-15 s
+p = 4.658e-02
+kappa = 0.459
+V_ad = 2.22e-03 eV = 5.12e-02 kcal/mol
+V_nad = -6.60e-04 eV = -1.52e-02 kcal/mol
+V_sc = 1.02e-03 eV = 2.35e-02 kcal/mol
