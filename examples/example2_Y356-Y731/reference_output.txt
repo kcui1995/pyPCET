@@ -1,0 +1,11 @@
+Calculating... R = 2.42A
+Calculating... R = 2.52A
+Calculating... R = 2.62A
+Calculating... R = 2.72A
+Calculating... R = 2.82A
+Calculating... R = 2.92A
+Calculating... R = 3.02A
+Calculating... R = 3.12A
+
+Dominant R for H = 2.54A
+k_H_tot = 1.5788e+03 s^-1
