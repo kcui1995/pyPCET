@@ -1,0 +1,17 @@
+Calculating... R = 2.37A
+Calculating... R = 2.42A
+Calculating... R = 2.47A
+Calculating... R = 2.52A
+Calculating... R = 2.57A
+Calculating... R = 2.62A
+Calculating... R = 2.67A
+Calculating... R = 2.72A
+Calculating... R = 2.77A
+Calculating... R = 2.82A
+Calculating... R = 2.87A
+
+Dominant R for H = 2.44A
+Dominant R for D = 2.45A
+k_H_tot = 1.2286e+09 s^-1
+k_D_tot = 6.3348e+08 s^-1
+KIE = 1.94
