@@ -20,7 +20,7 @@ ProdProtonPot = bspline(rp_read, E_Prod)
 Vel_rp = CubicSpline(rp_read, Vel)
 
 # define a finer rp grid
-rp = np.linspace(-0.8, 0.8, 256)
+rp = np.linspace(-0.7, 0.7, 512)
 
 # setup the system and perform the calculation
 system = kappa_coupling(rp, ReacProtonPot(rp), ProdProtonPot(rp), Vel_rp(rp)) 
