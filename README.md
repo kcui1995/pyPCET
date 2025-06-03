@@ -15,7 +15,7 @@ In general, this rate constant depends on the proton donor-acceptor separation $
 To use the pyPCET module, simply download the code and add it to your `$PYTHONPATH` variable.
 For example
 ```bash
-export $PYTHONPATH="$PWD/pyPCET-main":$PYTHONPATH
+export PYTHONPATH="$PWD/pyPCET-main":$PYTHONPATH
 ```
 
 ## Documentation
