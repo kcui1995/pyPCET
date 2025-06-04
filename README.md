@@ -28,7 +28,7 @@ To calculate the PCET rate constant using the vibronically nonadiabatic PCET the
 1. `ReacProtonPot` (2D array or function): proton potential of the reactant state
 2. `ProdProtonPot` (2D array or function): proton potential of the product state
 
-The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynomial. The 2D array should have shape (2, N), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV. 
+The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynomial. The 2D array should have shape (2, N), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom, and these functions should return the proton potential energy in eV. 
 
 > [!TIP]
 > Always plot the fitted/interpolated proton potentials with the original data to check the fitting/interpolation quality. 
@@ -211,7 +211,7 @@ By default, we will perform the analysis for the ground vibronic states (i.e., $
 system = kappa_coupling(rp, ReacProtonPot(rp), ProdProtonPot(rp), Vel_rp(rp), mu=1, nu=1)
 ```
 > [!CAUTION]
-> This program uses a general algorithm to automatically identify the proton vibrational states with symmetric and antisymmetric wave functions in the adiabatic proton potential, which are needed to calculate $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. The algorithm is applicable for any choices of $`\mu`$, $`\nu`$ states. However, it may fail in certain circumstances and a WARNING message will appear. In this case, the user should check the proton vibrational wave functions associated with the ground adiabatic electronic state manually to avoide unmeaningful output of $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. These wave functions can be accessed via
+> This program uses a general algorithm to automatically identify the proton vibrational states with symmetric and antisymmetric wave functions in the adiabatic proton potential, which are needed to calculate $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. The algorithm is applicable for any choices of $`\mu`$, $`\nu`$ states. However, it may fail in certain circumstances and a WARNING message will appear. In this case, the user should check the proton vibrational wave functions associated with the ground adiabatic electronic state manually to avoid unmeaningful output of $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. These wave functions can be accessed via
 
 ```python
 Evib_ad, wfc_ad = system.get_ground_adiabatic_proton_states()
