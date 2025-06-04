@@ -30,7 +30,7 @@ class pyPCET(object):
         The input of the proton potential can be either a 2D array or a callable function. 
 
         If these inputs are 2D arrays, a fitting will be performed to create a callable function for subsequent calculations. 
-        By default, the proton potentials will be fitted to an 8th-order polynomial. 
+        By default, the proton potentials will be fitted to an 6th-order polynomial. 
         The 2D array should have shape (N, 2), the first row is the proton position in Angstrom, the second row is the potential energy in eV. 
 
         If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. 
