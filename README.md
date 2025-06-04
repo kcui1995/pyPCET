@@ -3,19 +3,19 @@ Python implementation of the nonadiabatic PCET theory. This module is used to ca
 ```math
 k_{\rm PCET} = \frac{2\pi}{\hbar}|V_{\rm el}|^2\sum_{\mu,\nu}P_{\mu}|S_{\mu\nu}|^2\frac{1}{\sqrt{4\pi\lambda k_{\rm B}T}}\exp\left(-\frac{(\Delta G^{\rm o}_{\mu\nu}+\lambda)^2}{4\lambda k_{\rm B}T}\right)
 ```
-where $`V_{\rm el}`$ is the electronic coupling between reactant and product electronic states, $`P_{\mu}`$ is the Boltzmann population of the reactant vibronic states, $`S_{\mu\nu}`$ is the overlap integral between the proton vibrational wave functions associated with the reactant and product electronic states, $`\lambda`$ is the reorganization energy, $`\Delta G^{\rm o}_{\mu\nu}`$ is the reaction free energy for vibronic states $\mu$ and $\nu$: 
+where $`V_{\rm el}`$ is the electronic coupling between reactant and product electronic states, $`P_{\mu}`$ is the Boltzmann population of the reactant vibronic states, $`S_{\mu\nu}`$ is the overlap integral between the proton vibrational wave functions associated with the reactant and product electronic states, $`\lambda`$ is the reorganization energy, and $`\Delta G^{\rm o}_{\mu\nu}`$ is the reaction free energy for vibronic states $\mu$ and $\nu$: 
 ```math
 \Delta G^{\rm o}_{\mu\nu} = \Delta G^{\rm o} + \varepsilon_\nu - \varepsilon_\mu
 ```
-Here $\Delta G^{\rm o}$ is the PCET reaction free energy, $\varepsilon_\mu$ and $\varepsilon_\nu$ are the energies of reactant and product vibronic states $\mu$ and $\nu$, relative to their respective ground vibronic states. 
+Here $\Delta G^{\rm o}$ is the PCET reaction free energy and $\varepsilon_\mu$ and $\varepsilon_\nu$ are the energies of reactant and product vibronic states $\mu$ and $\nu$, relative to their respective ground vibronic states. 
 
 In general, this rate constant depends on the proton donor-acceptor separation $R$, and the overall PCET rate constant should be calculated as an average over $R$. This is not implemented in this module. However, users can easily write an outer loop to perform such average, as in examples 2 to 4. 
 
 ## Installation 
-To use the pyPCET module, simply download the code and add it to your `$PYTHONPATH` variable.
+To use the pyPCET module, simply download the code and add the parent folder to your `$PYTHONPATH` variable.
 For example
 ```bash
-export PYTHONPATH="$PWD/pyPCET-main":$PYTHONPATH
+export PYTHONPATH="[YOUR_INSTALLATION_PATH]/pyPCET-main":$PYTHONPATH
 ```
 
 ## Documentation
@@ -28,7 +28,7 @@ To calculate the PCET rate constant using the vibronically nonadiabatic PCET the
 1. `ReacProtonPot` (2D array or function): proton potential of the reactant state
 2. `ProdProtonPot` (2D array or function): proton potential of the product state
 
-The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynormial. The 2D array should have shape (2, N), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV. 
+The input of the proton potential can be either a 2D array or a callable function. If these inputs are 2D arrays, a fitting or splining will be performed to create a callable function for subsequent calculations. By default, the proton potentials will be fitted to an 6th-order polynomial. The 2D array should have shape (2, N), the first row is the proton position in Angstrom, and the second row is the potential energy in eV. If these inputs are functions, they must only take one argument, which is the proton position in Angstrom. The unit of the returned proton potentials should be eV. 
 
 > [!TIP]
 > Always plot the fitted/interpolated proton potentials with the original data to check the fitting/interpolation quality. 
@@ -39,7 +39,7 @@ The input of the proton potential can be either a 2D array or a callable functio
 
 
 #### Example
-The following code set up an `pyPCET` object for rate constant calculation. 
+The following code sets up an `pyPCET` object for rate constant calculation. 
 ```python
 import numpy as np
 from pyPCET import pyPCET
@@ -152,10 +152,10 @@ To start an analysis, we need the following quantities:
 3. `ProdProtonPot` (1D array): Product proton potential as a function of rp in eV
 4. `Vel` (float or 1D array): electronic coupling as a function of rp or a constant in eV
 
-The input of the proton coodtinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a number. If `Vel` is given as a number, we assume it is constant along the proton coordinate. 
+The input of the proton coordinate and the proton potentials can only be 1D arrays, and their length must be equal. The electronic coupling can be either an 1D array or a number. If `Vel` is given as a number, we assume it is constant along the proton coordinate. 
 
 >[!NOTE]
-> The programm will use the input data as is, without any automatic interpolation or fitting. The users should provide data on a fine grid of proton coordinate to ensure numerical accuracy in the calculations.
+> The program will use the input data as is, without any automatic interpolation or fitting. The users should provide data on a fine grid of proton coordinate to ensure numerical accuracy in the calculations.
 
 > [!TIP]
 > The `fit_poly6`, `fit_poly8`, and `bspline` functions in `functions.py` can be used to interpolate or fit the input data to generate proton potentials on a finer grid. See example below. 
@@ -211,7 +211,7 @@ By default, we will perform the analysis for the ground vibronic states (i.e., $
 system = kappa_coupling(rp, ReacProtonPot(rp), ProdProtonPot(rp), Vel_rp(rp), mu=1, nu=1)
 ```
 > [!CAUTION]
-> This program uses a general algorithm to automatically identify the proton vibrational states with symmetric and antisymmetric wave functions in the adidabatic proton potential, which are needed to calculate $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. The algorithm is applicable for any choices of $`\mu`$, $`\nu`$ states. However, it may fail in certain circumstances and a WARNING message will appear. In this case, the user should check the proton vibrational wave functions associated with the ground adiabatic electronic state manually to avoide unmeaningful output of $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. These wave functions can be accessed via
+> This program uses a general algorithm to automatically identify the proton vibrational states with symmetric and antisymmetric wave functions in the adiabatic proton potential, which are needed to calculate $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. The algorithm is applicable for any choices of $`\mu`$, $`\nu`$ states. However, it may fail in certain circumstances and a WARNING message will appear. In this case, the user should check the proton vibrational wave functions associated with the ground adiabatic electronic state manually to avoide unmeaningful output of $`V_{\rm \mu\nu}^{(\rm sc)}`$ and $`V_{\rm \mu\nu}^{(\rm ad)}`$. These wave functions can be accessed via
 
 ```python
 Evib_ad, wfc_ad = system.get_ground_adiabatic_proton_states()
