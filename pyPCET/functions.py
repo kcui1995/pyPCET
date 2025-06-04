@@ -71,12 +71,12 @@ def gen_double_well(De1, De2, beta1, beta2, R0, Delta, VPT0, smooth='poly8', s=8
     # due to avoided crossing, E(r) may have some bumps
     # the following codes are used to smoothen E(r)
     if smooth == 'poly8':
-        # fit the potential to 8th-order polynormial
+        # fit the potential to 8th-order polynomial
         fitted_E = fit_poly8(r, E)
         def double_well_func(rr):
             return fitted_E(rr) - np.min(fitted_E(r))
     elif smooth == 'poly6':
-        # fit the potential to 6th-order polynormial
+        # fit the potential to 6th-order polynomial
         fitted_E = fit_poly6(r, E)
         def double_well_func(rr):
             return fitted_E(rr) - np.min(fitted_E(r))
