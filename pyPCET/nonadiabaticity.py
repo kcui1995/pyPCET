@@ -3,7 +3,10 @@ from .FGH_1D import FGH_1D
 from .functions import *
 from .units import * 
 from scipy.special import gamma
-from scipy.integrate import simps
+try:
+    from scipy.integrate import simps
+except ImportError:
+    from scipy.integrate import simpson as simps
 
 
 class kappa_coupling(object):
