@@ -4,7 +4,10 @@ from pyPCET import pyPCET
 from pyPCET.functions import bspline 
 from pyPCET.units import massH
 from pyPCET.units import kcal2eV
-from scipy.integrate import simps
+try:
+    from scipy.integrate import simps
+except ImportError:
+    from scipy.integrate import simpson as simps
 from scipy.signal import find_peaks
 from scipy.optimize import curve_fit
 
