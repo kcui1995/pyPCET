@@ -1,6 +1,9 @@
 import numpy as np
 import numpy.linalg as la
-from scipy.integrate import simps
+try:
+    from scipy.integrate import simps
+except ImportError:
+    from scipy.integrate import simpson as simps
 from .functions import *
 from .units import *
 from .FGH_1D import FGH_1D
