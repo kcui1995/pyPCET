@@ -5,7 +5,10 @@ from pyPCET import pyPCET
 from pyPCET.functions import fit_poly6, fit_poly8
 from pyPCET.units import massH, massD
 from pyPCET.units import kB, kcal2eV, A2Bohr, Ha2eV
-from scipy.integrate import simps
+try:
+    from scipy.integrate import simps
+except ImportError:
+    from scipy.integrate import simpson as simps
 from scipy.signal import find_peaks
 from scipy.interpolate import interp1d
 
