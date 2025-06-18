@@ -176,7 +176,7 @@ class pyPCET(object):
         # Since the proton vibrational states and the overlap between these states only depend on the proton potentials and the mass of the particle, 
         # we can reuse the stored proton states from the previous calculation for the new calculation with updated DeltaG, Lambda, etc. parameters to save time. 
         # This can be done by setting reuse_saved_proton_states=True. This must be used with caution. 
-        if not (hasattr(self, ReacProtonEnergyLevels) and hasattr(self, ProdProtonEnergyLevels) and hasattr(self, ReacProtonWaveFunctions) and hasattr(self, ProdProtonWaveFunctions) and hasattr(self, MassUsedPreviously)):
+        if not (hasattr(self, 'ReacProtonEnergyLevels') and hasattr(self, 'ProdProtonEnergyLevels') and hasattr(self, 'ReacProtonWaveFunctions') and hasattr(self, 'ProdProtonWaveFunctions') and hasattr(self, 'MassUsedPreviously')):
             # No stored proton states found, new calculations are needed
             reuse_saved_proton_states=False
         elif self.MassUsedPreviously != mass:
