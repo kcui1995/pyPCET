@@ -147,7 +147,7 @@ for i,R in enumerate(Rs):
 
             Evib_reactant, wfc_reactant = systemH.get_reactant_proton_states()
             Evib_product, wfc_product = systemH.get_product_proton_states()
-            rp = system.rp
+            rp = systemH.rp
 
             # align the zero-point energy of the reactant and product states in this plot
             if Evib_product[0] < Evib_reactant[0]:
