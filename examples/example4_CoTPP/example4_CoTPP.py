@@ -190,7 +190,7 @@ for n,E_appl in enumerate(E_appl_list):
             # print a table for these quantities
 
             # write to a file
-                with open(f'rate_constant_contribution_R{R:.2f}A.log', 'w') as outfp:
+                with open(f'rate_constant_contribution_R{R:.3f}A.log', 'w') as outfp:
                     # for H
                     Pu = systemH.get_reactant_state_distributions()
                     Suv = systemH.get_proton_overlap_matrix()
