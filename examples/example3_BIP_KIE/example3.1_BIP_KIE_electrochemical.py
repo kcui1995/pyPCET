@@ -121,7 +121,10 @@ kD_R = np.zeros(len(Rs))
 
 for i,R in enumerate(Rs):
     print(f'Calculating... R = {R:.2f}A')
-    system = pyPCET(ReacProtonPot_R[i], ProdProtonPot_R[i], DeltaG=DeltaG, Lambda=Lambda, Vel=Vel, NStates=NStates, rmin=-1.0, rmax=1.0)
+    
+    # create two instances of the pyPCET object for H and D, respectively
+    systemH = pyPCET(ReacProtonPot_R[i], ProdProtonPot_R[i], DeltaG=DeltaG, Lambda=Lambda, Vel=Vel, NStates=NStates, rmin=-1.0, rmax=1.0)
+    systemD = pyPCET(ReacProtonPot_R[i], ProdProtonPot_R[i], DeltaG=DeltaG, Lambda=Lambda, Vel=Vel, NStates=NStates, rmin=-1.0, rmax=1.0)
 
     kH_epsilon = np.zeros(len(epsilons))
     kD_epsilon = np.zeros(len(epsilons))
@@ -129,9 +132,10 @@ for i,R in enumerate(Rs):
         # update Delta G for a given epsilon
         # we only calculate the anodic rate constant here
         dG_anodic = epsilon - eta 
-        system.set_parameters(DeltaG=dG_anodic)
-        kH_epsilon[j] = system.calculate(mass=massH, T=T)
-        kD_epsilon[j] = system.calculate(mass=massD, T=T)
+        systemH.set_parameters(DeltaG=dG_anodic)
+        systemD.set_parameters(DeltaG=dG_anodic)
+        kH_epsilon[j] = systemH.calculate(mass=massH, T=T, reuse_saved_proton_states=True)
+        kD_epsilon[j] = systemD.calculate(mass=massD, T=T, reuse_saved_proton_states=True)
 
         # plot the wave functions and print the state contrtbutions for epsilon = 0
         # plot for proton and print for both H and D
@@ -141,9 +145,8 @@ for i,R in enumerate(Rs):
             gs = fig.add_gridspec(ncols=2, wspace=0)
             ax1,ax2 = gs.subplots(sharex=True, sharey=True)
 
-            system.calculate(mass=massH, T=T)
-            Evib_reactant, wfc_reactant = system.get_reactant_proton_states()
-            Evib_product, wfc_product = system.get_product_proton_states()
+            Evib_reactant, wfc_reactant = systemH.get_reactant_proton_states()
+            Evib_product, wfc_product = systemH.get_product_proton_states()
             rp = system.rp
 
             # align the zero-point energy of the reactant and product states in this plot
@@ -188,12 +191,12 @@ for i,R in enumerate(Rs):
             # write to a file
             with open(f'rate_constant_contribution_R{R:.2f}A.log', 'w') as outfp:
                 # for H
-                Pu = system.get_reactant_state_distributions()
-                Suv = system.get_proton_overlap_matrix()
-                dGuv = system.get_reaction_free_energy_matrix()
-                dGa_uv = system.get_activation_free_energy_matrix()
-                kuv = system.get_kinetic_contribution_matrix()
-                k_tot = system.get_total_rate_constant()
+                Pu = systemH.get_reactant_state_distributions()
+                Suv = systemH.get_proton_overlap_matrix()
+                dGuv = systemH.get_reaction_free_energy_matrix()
+                dGa_uv = systemH.get_activation_free_energy_matrix()
+                kuv = systemH.get_kinetic_contribution_matrix()
+                k_tot = systemH.get_total_rate_constant()
                 percentage_contribution = kuv/k_tot
 
                 outfp.write(f'\nR = {R:.2f}A, epsilon = 0, eta = 0\n')
@@ -206,13 +209,12 @@ for i,R in enumerate(Rs):
                 outfp.write('='*125 + '\n\n')
 
                 # for D
-                system.calculate(mass=massD, T=T)
-                Pu = system.get_reactant_state_distributions()
-                Suv = system.get_proton_overlap_matrix()
-                dGuv = system.get_reaction_free_energy_matrix()
-                dGa_uv = system.get_activation_free_energy_matrix()
-                kuv = system.get_kinetic_contribution_matrix()
-                k_tot = system.get_total_rate_constant()
+                Pu = systemD.get_reactant_state_distributions()
+                Suv = systemD.get_proton_overlap_matrix()
+                dGuv = systemD.get_reaction_free_energy_matrix()
+                dGa_uv = systemD.get_activation_free_energy_matrix()
+                kuv = systemD.get_kinetic_contribution_matrix()
+                k_tot = systemD.get_total_rate_constant()
                 percentage_contribution = kuv/k_tot
 
                 outfp.write('\nD\n' + '='*125 + '\n')
