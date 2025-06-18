@@ -19,8 +19,6 @@ from scipy.optimize import curve_fit
 # Hutchison et. al. ACS Catat. 2024, 19, 14363–14372.
 #=========================================================================================
 
-# !!!NOTE!!! This script takes ~18h to run. 
-
 # Donor-Acceptor distance values sampled in calculations
 Rs = np.array([3.057,3.157,3.207,3.257,3.307,3.357,3.379,3.407,3.457,3.507,3.557,3.607,3.657,3.757,3.857,3.957,4.057,4.157,4.257])
 
