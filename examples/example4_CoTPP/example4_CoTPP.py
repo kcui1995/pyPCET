@@ -273,7 +273,8 @@ for n,E_appl in enumerate(E_appl_list):
     print(f'k_H_tot = {ave_kH_of_E_appl:.4e} s^-1')
     print(f'k_D_tot = {ave_kD_of_E_appl:.4e} s^-1')
     print(f'KIE = {ave_kH_of_E_appl/ave_kD_of_E_appl:.2f}')
-
+    print('\n')
+    
     kHD_of_E[0][n] = E_appl
     kHD_of_E[1][n] = np.log(ave_kH_of_E_appl)
     kHD_of_E[2][n] = np.log(ave_kD_of_E_appl)
