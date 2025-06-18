@@ -135,7 +135,7 @@ RTF = 8.31446*T/96485.33 #Units: J/C = V
 pH = 0 #This helps convert from the RHE to SHE scale because the potential drop is defined on the SHE scale
 
 # Build the applied potential list
-E_appl_list = np.arange(-0.7,-0.49,0.01)
+E_appl_list = np.arange(-0.7,-0.49,0.02)
 
 # Extract extrema of sampled proton-donor acceptor distances
 R_min = Rs[0]
