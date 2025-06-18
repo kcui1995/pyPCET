@@ -184,9 +184,9 @@ for n,E_appl in enumerate(E_appl_list):
             DeltaGD = DeltaG0_D + E_appl + prod_work - react_work - epsilon + RTF*np.log(10)*pH - RTF*np.log(10)*(14.0-14.87)
     
             systemH.set_parameters(DeltaG=DeltaGH)
-            kH_epsilon[j] = systemH.calculate(mass=massH, T=T)
+            kH_epsilon[j] = systemH.calculate(mass=massH, T=T, reuse_saved_proton_states=True)
             systemD.set_parameters(DeltaG=DeltaGD)
-            kD_epsilon[j] = systemD.calculate(mass=massD, T=T)
+            kD_epsilon[j] = systemD.calculate(mass=massD, T=T, reuse_saved_proton_states=True)
             
             if E_appl == -0.66:
             # print a table for these quantities
@@ -212,7 +212,6 @@ for n,E_appl in enumerate(E_appl_list):
                     outfp.write('='*125 + '\n\n')
 
                     # for D
-                    systemD.calculate(mass=massD, T=T)
                     Pu = systemD.get_reactant_state_distributions()
                     Suv = systemD.get_proton_overlap_matrix()
                     dGuv = systemD.get_reaction_free_energy_matrix()
