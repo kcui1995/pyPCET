@@ -186,7 +186,7 @@ for n,E_appl in enumerate(E_appl_list):
             systemD.set_parameters(DeltaG=DeltaGD)
             kD_epsilon[j] = systemD.calculate(mass=massD, T=T, reuse_saved_proton_states=True)
             
-            if E_appl == -0.66:
+            if np.abs(E_appl - -0.66) <= 1e-3:
             # print a table for these quantities
 
             # write to a file
