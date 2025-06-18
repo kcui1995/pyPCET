@@ -200,7 +200,7 @@ for n,E_appl in enumerate(E_appl_list):
                     k_tot = systemH.get_total_rate_constant()
                     percentage_contribution = kuv/k_tot
 
-                    outfp.write(f'\nR = {R:.2f}A, epsilon = 0.005, E_appl = –0.66\n')
+                    outfp.write(f'\nR = {R:.3f}A, epsilon = 0.005, E_appl = –0.66\n')
                     outfp.write('\nH\n' + '='*125 + '\n')
                     outfp.write('(u, v)\t\tP_u\t\t\t|S_uv|^2\t\tDelta G_uv / eV\t\tDelta G^#_uv / eV\t% Contrib.\n')
                     outfp.write('-'*125 + '\n')
