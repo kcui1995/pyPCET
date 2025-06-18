@@ -285,6 +285,6 @@ Tafel_params_D, covD = curve_fit(Tafel,kHD_of_E[0],kHD_of_E[2])
 alphaH = Tafel_params_H[0]*RTF
 alphaD = Tafel_params_D[0]*RTF
 
-print('The transfer coefficient for protons is: ' + str(alphaH))
-print('The transfer coefficient for deuterons is: ' + str(alphaD))
+print(f'The transfer coefficient for protons is: {alphaH:.4f}')
+print(f'The transfer coefficient for deuterons is: {alphaD:.4f}')
 
