@@ -172,16 +172,16 @@ class pyPCET(object):
         return self.kuv
 
     def calculate(self, mass=massH, T=298, reuse_saved_proton_states=False):
-        # In certain occasions, we want to recalculate the rate constant using the same proton potentials but different other parameters such as DeltaG, Lambda, etc. 
-        # Since the proton vibrational states and the overlap between these states only depend on the proton potentials and the mass of the particle, 
-        # we can reuse the stored proton states from the previous calculation for the new calculation with updated DeltaG, Lambda, etc. parameters to save time. 
-        # This can be done by setting reuse_saved_proton_states=True. This must be used with caution. 
+        # In certain occasions, we want to calculate the rate constant multiple times using the same proton potentials but different DeltaG, Lambda, or Vel parameters. 
+        # Since the proton vibrational states and the overlap between the proton vibrational wave functions only depend on the proton potentials and the mass of the particle, 
+        # we can reuse the stored proton vibrational states from the previous calculation for the new calculation, which will significantly speed up the calculation. 
+        # This can be done by setting reuse_saved_proton_states=True. However, this should be use with caution. 
         if not (hasattr(self, 'ReacProtonEnergyLevels') and hasattr(self, 'ProdProtonEnergyLevels') and hasattr(self, 'ReacProtonWaveFunctions') and hasattr(self, 'ProdProtonWaveFunctions') and hasattr(self, 'MassUsedPreviously')):
             # No stored proton states found, new calculations are needed
-            reuse_saved_proton_states=False
+            reuse_saved_proton_states = False
         elif self.MassUsedPreviously != mass:
-            # The mass of the particle changes, new calculations are needed
-            reuse_saved_proton_states=False
+            # The mass of the particle has been changed, new calculations are needed
+            reuse_saved_proton_states = False
 
         if not reuse_saved_proton_states:
             self.calc_proton_vibrational_states(mass)
