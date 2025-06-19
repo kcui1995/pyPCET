@@ -111,7 +111,7 @@ class pyPCET(object):
     def calc_proton_vibrational_states(self, mass=massH):
         """
         This function calculates the proton vibrational states (energies and wave functions)
-        corresponding to ReacProtonPot and ProdProtonPot respectively. 
+        for potentials ReacProtonPot and ProdProtonPot respectively. 
         The FGH_1D code implemented by Maxim Secor is used
         """
         # calculate proton potentials on a grid, self.rp
@@ -122,6 +122,11 @@ class pyPCET(object):
         dx = sgrid/(ngrid-1)
         E_reac_in_Ha = self.ReacProtonPot(self.rp)*eV2Ha
         E_prod_in_Ha = self.ProdProtonPot(self.rp)*eV2Ha
+
+        # record the mass used in this calculation
+        # If a calculation is repeated for the same proton potential and the same mass, 
+        # we will used the stored results from the previous calculation to save time
+        self.MassUsedPreviously = mass
 
         # calculate the proton vibrational energies and wave fucntions for the reactant
         eigvals_reac, eigvecs_reac = FGH_1D(ngrid, sgrid, E_reac_in_Ha, mass)
@@ -166,10 +171,23 @@ class pyPCET(object):
         self.kuv = k0*np.matmul(np.diag(self.Pu), self.Suv*self.Suv*self.Iuv)
         return self.kuv
 
-    def calculate(self, mass=massH, T=298):
-        self.calc_proton_vibrational_states(mass)
+    def calculate(self, mass=massH, T=298, reuse_saved_proton_states=False):
+        # In certain occasions, we want to calculate the rate constant multiple times using the same proton potentials but different DeltaG, Lambda, or Vel parameters. 
+        # Since the proton vibrational states and the overlap between the proton vibrational wave functions only depend on the proton potentials and the mass of the particle, 
+        # we can reuse the stored proton vibrational states from the previous calculation for the new calculation, which will significantly speed up the calculation. 
+        # This can be done by setting reuse_saved_proton_states=True. However, this should be use with caution. 
+        if not (hasattr(self, 'ReacProtonEnergyLevels') and hasattr(self, 'ProdProtonEnergyLevels') and hasattr(self, 'ReacProtonWaveFunctions') and hasattr(self, 'ProdProtonWaveFunctions') and hasattr(self, 'MassUsedPreviously')):
+            # No stored proton states found, new calculations are needed
+            reuse_saved_proton_states = False
+        elif self.MassUsedPreviously != mass:
+            # The mass of the particle has been changed, new calculations are needed
+            reuse_saved_proton_states = False
+
+        if not reuse_saved_proton_states:
+            self.calc_proton_vibrational_states(mass)
+            self.calc_proton_overlap_matrix()
+
         self.calc_reactant_state_distributions(T)
-        self.calc_proton_overlap_matrix()
         self.calc_reaction_free_energy_matrix()
         self.calc_kinetic_contribution_matrix(T)
 

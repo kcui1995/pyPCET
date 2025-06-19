@@ -19,8 +19,6 @@ from scipy.optimize import curve_fit
 # Hutchison et. al. ACS Catat. 2024, 19, 14363–14372.
 #=========================================================================================
 
-# !!!NOTE!!! This script takes ~18h to run. 
-
 # Donor-Acceptor distance values sampled in calculations
 Rs = np.array([3.057,3.157,3.207,3.257,3.307,3.357,3.379,3.407,3.457,3.507,3.557,3.607,3.657,3.757,3.857,3.957,4.057,4.157,4.257])
 
@@ -137,7 +135,7 @@ RTF = 8.31446*T/96485.33 #Units: J/C = V
 pH = 0 #This helps convert from the RHE to SHE scale because the potential drop is defined on the SHE scale
 
 # Build the applied potential list
-E_appl_list = np.arange(-0.7,-0.49,0.01)
+E_appl_list = np.arange(-0.7,-0.49,0.02)
 
 # Extract extrema of sampled proton-donor acceptor distances
 R_min = Rs[0]
@@ -184,15 +182,15 @@ for n,E_appl in enumerate(E_appl_list):
             DeltaGD = DeltaG0_D + E_appl + prod_work - react_work - epsilon + RTF*np.log(10)*pH - RTF*np.log(10)*(14.0-14.87)
     
             systemH.set_parameters(DeltaG=DeltaGH)
-            kH_epsilon[j] = systemH.calculate(mass=massH, T=T)
+            kH_epsilon[j] = systemH.calculate(mass=massH, T=T, reuse_saved_proton_states=True)
             systemD.set_parameters(DeltaG=DeltaGD)
-            kD_epsilon[j] = systemD.calculate(mass=massD, T=T)
+            kD_epsilon[j] = systemD.calculate(mass=massD, T=T, reuse_saved_proton_states=True)
             
-            if E_appl == -0.66:
+            if np.abs(E_appl - -0.66) <= 1e-3 and np.abs(epsilon - 0.005) <= 1e-3:
             # print a table for these quantities
 
             # write to a file
-                with open(f'rate_constant_contribution_R{R:.2f}A.log', 'w') as outfp:
+                with open(f'rate_constant_contribution_R{R:.3f}A.log', 'w') as outfp:
                     # for H
                     Pu = systemH.get_reactant_state_distributions()
                     Suv = systemH.get_proton_overlap_matrix()
@@ -202,7 +200,7 @@ for n,E_appl in enumerate(E_appl_list):
                     k_tot = systemH.get_total_rate_constant()
                     percentage_contribution = kuv/k_tot
 
-                    outfp.write(f'\nR = {R:.2f}A, epsilon = 0.005, E_appl = –0.66\n')
+                    outfp.write(f'\nR = {R:.3f}A, epsilon = 0.005, E_appl = –0.66\n')
                     outfp.write('\nH\n' + '='*125 + '\n')
                     outfp.write('(u, v)\t\tP_u\t\t\t|S_uv|^2\t\tDelta G_uv / eV\t\tDelta G^#_uv / eV\t% Contrib.\n')
                     outfp.write('-'*125 + '\n')
@@ -212,7 +210,6 @@ for n,E_appl in enumerate(E_appl_list):
                     outfp.write('='*125 + '\n\n')
 
                     # for D
-                    systemD.calculate(mass=massD, T=T)
                     Pu = systemD.get_reactant_state_distributions()
                     Suv = systemD.get_proton_overlap_matrix()
                     dGuv = systemD.get_reaction_free_energy_matrix()
@@ -276,7 +273,8 @@ for n,E_appl in enumerate(E_appl_list):
     print(f'k_H_tot = {ave_kH_of_E_appl:.4e} s^-1')
     print(f'k_D_tot = {ave_kD_of_E_appl:.4e} s^-1')
     print(f'KIE = {ave_kH_of_E_appl/ave_kD_of_E_appl:.2f}')
-
+    print()
+    
     kHD_of_E[0][n] = E_appl
     kHD_of_E[1][n] = np.log(ave_kH_of_E_appl)
     kHD_of_E[2][n] = np.log(ave_kD_of_E_appl)
@@ -288,6 +286,6 @@ Tafel_params_D, covD = curve_fit(Tafel,kHD_of_E[0],kHD_of_E[2])
 alphaH = Tafel_params_H[0]*RTF
 alphaD = Tafel_params_D[0]*RTF
 
-print('The transfer coefficient for protons is: ' + str(alphaH))
-print('The transfer coefficient for deuterons is: ' + str(alphaD))
+print(f'The transfer coefficient for protons is: {alphaH:.4f}')
+print(f'The transfer coefficient for deuterons is: {alphaD:.4f}')
 
