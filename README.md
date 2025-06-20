@@ -104,7 +104,7 @@ KIE = k_tot_H/k_tot_D
 ```
 
 > [!TIP]
-> In certain occasions, we want to calculate the rate constant multiple times using the same proton potentials but different `DeltaG`, `Lambda`, or `Vel` parameters. Since the proton vibrational states and the overlap between the proton vibrational wave functions only depend on the proton potentials and the mass of the particle, we can reuse the stored proton vibrational states from the previous calculation for the new calculation, which will significantly speed up the calculation. This can be done by setting `reuse_saved_proton_states=True`. However, this feature should be use with caution. 
+> In certain occasions, we want to calculate the rate constant multiple times using the same proton potentials but different `DeltaG`, `Lambda`, or `Vel` parameters. Since the proton vibrational states and the overlap between the proton vibrational wave functions only depend on the proton potentials and the mass of the particle, we can reuse the stored proton vibrational states from the previous calculation for the new calculation, which will significantly speed up the calculation. This can be done by setting `reuse_saved_proton_states=True`. However, this feature should be used with caution. 
 
 ```python
 system.calculate(massH, T, reuse_saved_proton_states=True)
