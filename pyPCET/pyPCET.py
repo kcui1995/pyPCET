@@ -175,7 +175,7 @@ class pyPCET(object):
         # In certain occasions, we want to calculate the rate constant multiple times using the same proton potentials but different DeltaG, Lambda, or Vel parameters. 
         # Since the proton vibrational states and the overlap between the proton vibrational wave functions only depend on the proton potentials and the mass of the particle, 
         # we can reuse the stored proton vibrational states from the previous calculation for the new calculation, which will significantly speed up the calculation. 
-        # This can be done by setting reuse_saved_proton_states=True. However, this should be use with caution. 
+        # This can be done by setting reuse_saved_proton_states=True. However, this feature should be used with caution. 
         if not (hasattr(self, 'ReacProtonEnergyLevels') and hasattr(self, 'ProdProtonEnergyLevels') and hasattr(self, 'ReacProtonWaveFunctions') and hasattr(self, 'ProdProtonWaveFunctions') and hasattr(self, 'MassUsedPreviously')):
             # No stored proton states found, new calculations are needed
             reuse_saved_proton_states = False
