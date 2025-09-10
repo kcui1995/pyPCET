@@ -12,7 +12,7 @@ Lambda = 1.00
 
 
 # double well potentials calculated from first principles 
-rp = np.array([-0.614,-0.550,-0.485,-0.420,-0.356,-0.291,-0.226,-0.162,-0.097,-0.032,0.032,0.097,0.162,0.226,0.291,0.356,0.420,0.485,0.550,0.614])
+rp = np.array([0.614,0.550,0.485,0.420,0.356,0.291,0.226,0.162,0.097,0.032,-0.032,-0.097,-0.162,-0.226,-0.291,-0.356,-0.420,-0.485,-0.550,-0.614])
 E_Reac = np.array([5.283,4.534,4.061,3.794,3.673,3.646,3.680,3.688,3.634,3.646,3.602,3.513,3.392,3.257,3.138,3.078,3.140,3.413,4.022,5.144])
 E_Prod = np.array([4.847,4.134,3.706,3.495,3.452,3.509,3.620,3.801,3.949,4.073,4.157,4.194,4.189,4.157,4.128,4.144,4.270,4.597,5.250,6.411])
 
@@ -45,16 +45,16 @@ else:
     dEr = Evib_product[0] - Evib_reactant[0]
     dEp = 0
 
-ax1.plot(-rp, ReacProtonPot(rp)+dEr, 'b', lw=2)
-ax1.plot(-rp, ProdProtonPot(rp)+dEp, 'r', lw=2)
+ax1.plot(rp, ReacProtonPot(rp)+dEr, 'b', lw=2)
+ax1.plot(rp, ProdProtonPot(rp)+dEp, 'r', lw=2)
 scale_wfc = 0.06        # we will plot wave functions and energies in the same plot, this factor scales the wave function for better visualization
 
 for i, (Ei, wfci) in enumerate(zip(Evib_reactant[:NStates_to_show], wfc_reactant[:NStates_to_show])):
     # change the sign of the vibrational wave functions for better visualization
     # make the largest amplitude positive
     sign = 1 if np.abs(np.max(wfci)) > np.abs(np.min(wfci)) else -1
-    ax1.plot(-rp, Ei+dEr+scale_wfc*sign*wfci, 'b-', lw=1, alpha=(1-0.12*i))
-    ax1.fill_between(-rp, Ei+dEr+scale_wfc*sign*wfci, Ei+dEr, color='b', alpha=0.4)
+    ax1.plot(rp, Ei+dEr+scale_wfc*sign*wfci, 'b-', lw=1, alpha=(1-0.12*i))
+    ax1.fill_between(rp, Ei+dEr+scale_wfc*sign*wfci, Ei+dEr, color='b', alpha=0.4)
 
 ax1.set_xlim(-0.8,0.8)
 ax1.set_ylim(0,1.3)
@@ -63,13 +63,13 @@ ax1.set_ylabel(r'$E$ / eV', fontsize=16)
 ax1.tick_params(labelsize=14)
 
 
-ax2.plot(-rp, ReacProtonPot(rp)+dEr, 'b', lw=2)
-ax2.plot(-rp, ProdProtonPot(rp)+dEp, 'r', lw=2)
+ax2.plot(rp, ReacProtonPot(rp)+dEr, 'b', lw=2)
+ax2.plot(rp, ProdProtonPot(rp)+dEp, 'r', lw=2)
 
 for i, (Ei, wfci) in enumerate(zip(Evib_product[:NStates_to_show], wfc_product[:NStates_to_show])):
     sign = 1 if np.abs(np.max(wfci)) > np.abs(np.min(wfci)) else -1
-    ax2.plot(-rp, Ei+dEp+scale_wfc*sign*wfci, 'r-', lw=1, alpha=(1-0.12*i))
-    ax2.fill_between(-rp, Ei+dEp+scale_wfc*sign*wfci, Ei+dEp, color='r', alpha=0.4)
+    ax2.plot(rp, Ei+dEp+scale_wfc*sign*wfci, 'r-', lw=1, alpha=(1-0.12*i))
+    ax2.fill_between(rp, Ei+dEp+scale_wfc*sign*wfci, Ei+dEp, color='r', alpha=0.4)
 
 
 ax2.set_xlim(-0.65,0.75)
